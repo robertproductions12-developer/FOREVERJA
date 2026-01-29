@@ -81,6 +81,19 @@
             color: #999; transition: all 0.3s;
         }
         .nav-link.active { color: white; border-bottom: 2px solid var(--orange-main); }
+
+        /* Estilos Menú Móvil */
+        #mobile-menu {
+            transition: all 0.4s ease-in-out;
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
     </style>
 </head>
 <body>
@@ -97,12 +110,15 @@
     </div>
 
     <!-- NAVBAR -->
-    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/60 backdrop-blur-2xl">
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/80 backdrop-blur-2xl">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <!-- LOGO / ICONO -->
             <div class="flex items-center gap-3">
-                <img id="v-main-logo" src="" class="w-12 h-12 rounded-xl object-contain hidden">
-                <div id="v-default-logo" class="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center">
-                    <i data-lucide="crown" class="text-white"></i>
+                <div id="logo-container" class="w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl">
+                    <img id="v-main-logo" src="" class="w-full h-full object-contain hidden">
+                    <div id="v-default-logo" class="w-full h-full bg-orange-600 flex items-center justify-center">
+                        <i data-lucide="crown" class="text-white"></i>
+                    </div>
                 </div>
                 <div class="hidden sm:flex flex-col">
                     <span class="text-lg font-extrabold tracking-tighter" id="v-logo-name">CARGANDO...</span>
@@ -110,57 +126,81 @@
                 </div>
             </div>
 
-            <!-- MENU DESPLEGABLE / NAVEGACIÓN -->
-            <div class="flex gap-6 items-center">
+            <!-- MENU DESKTOP -->
+            <div class="hidden md:flex gap-8 items-center">
                 <span onclick="setFilter('about')" class="nav-link" id="nav-about">Sobre Nosotros</span>
                 <span onclick="setFilter('resources')" class="nav-link" id="nav-resources">Recursos</span>
                 <span onclick="setFilter('info')" class="nav-link" id="nav-info">Información</span>
                 
-                <button onclick="checkAdminAccess()" class="text-gray-400 hover:text-white transition">
+                <div class="flex items-center gap-4 ml-4">
+                    <button onclick="checkAdminAccess()" class="text-gray-400 hover:text-white transition">
+                        <i data-lucide="lock" class="w-5 h-5"></i>
+                    </button>
+                    <button onclick="showExit()" class="p-2 bg-red-600/20 text-red-500 rounded-lg hover:bg-red-600 transition">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- BOTON MOVIL HAMBURGUESA -->
+            <div class="md:hidden flex items-center gap-4">
+                 <button onclick="checkAdminAccess()" class="text-gray-400">
                     <i data-lucide="lock" class="w-5 h-5"></i>
                 </button>
-                <button onclick="showExit()" class="p-2 bg-red-600/20 text-red-500 rounded-lg hover:bg-red-600 hover:text-white transition">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                <button onclick="toggleMobileMenu()" class="text-white">
+                    <i data-lucide="menu" id="menu-icon"></i>
                 </button>
             </div>
+        </div>
+
+        <!-- MENU DESPLEGABLE MOVIL -->
+        <div id="mobile-menu" class="absolute top-20 left-0 w-full bg-black/95 border-b border-white/10 flex flex-col p-6 gap-6 md:hidden">
+            <span onclick="setFilter('about'); toggleMobileMenu()" class="nav-link text-lg text-center" id="m-nav-about">Sobre Nosotros</span>
+            <span onclick="setFilter('resources'); toggleMobileMenu()" class="nav-link text-lg text-center" id="m-nav-resources">Recursos</span>
+            <span onclick="setFilter('info'); toggleMobileMenu()" class="nav-link text-lg text-center" id="m-nav-info">Información</span>
+            <button onclick="showExit()" class="btn-premium justify-center w-full bg-red-600/20 text-red-500">
+                <i data-lucide="log-out"></i> Salir
+            </button>
         </div>
     </nav>
 
     <!-- HERO -->
     <header class="pt-40 pb-10 px-6 text-center">
         <div class="max-w-4xl mx-auto" data-aos="fade-up">
-            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tighter leading-none mb-4 orange-gradient-text">FOREVER JA</h1>
-            <p class="text-gray-500 uppercase tracking-[0.4em] text-xs font-bold">Uniendo Generaciones</p>
+            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tighter leading-none mb-4 orange-gradient-text" id="v-display-title">FOREVER JA</h1>
+            <p class="text-gray-500 uppercase tracking-[0.4em] text-xs font-bold" id="v-display-sub">Uniendo Generaciones</p>
         </div>
     </header>
 
     <!-- VIDEO PRINCIPAL -->
     <section id="video-sec" class="max-w-6xl mx-auto px-6 mb-20">
         <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video border border-white/10 shadow-2xl">
-            <video id="v-main-video" src="123.mp3" controls class="w-full h-full bg-black"></video>
+            <video id="v-main-video" src="" controls class="w-full h-full bg-black"></video>
         </div>
     </section>
 
-    <!-- CONTENIDO FILTRADO -->
-    <main id="main-content" class="pb-32 space-y-24 md:space-y-40">
+    <!-- CONTENIDO DINÁMICO -->
+    <main id="main-content" class="pb-32 space-y-20 md:space-y-40">
         <!-- Render dinámico -->
     </main>
 
     <!-- PANEL ADMIN -->
     <aside id="adminPanel" class="admin-sidebar p-8 overflow-y-auto">
         <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-            <h2 class="text-xl font-bold text-orange-500">Administrador</h2>
+            <h2 class="text-xl font-bold text-orange-500">Ajustes del Portal</h2>
             <button onclick="toggleAdmin()"><i data-lucide="x"></i></button>
         </div>
 
         <div class="space-y-6">
             <div class="space-y-4">
-                <label class="text-xs font-bold text-gray-500 uppercase">Configuración Visual</label>
-                <input type="text" id="in-logo-url" placeholder="URL Logo (GitHub)" class="input-dark">
-                <input type="text" id="in-exit-url" placeholder="URL Imagen de Salida" class="input-dark">
-                <input type="text" id="in-video-url" placeholder="URL Video (.mp4)" class="input-dark">
-                <input type="text" id="in-logo-name" placeholder="Nombre Web" class="input-dark">
-                <input type="text" id="in-logo-sub" placeholder="Subtítulo" class="input-dark">
+                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Multimedia y Links</label>
+                <input type="text" id="in-logo-url" placeholder="URL de Icono/Logo (GitHub)" class="input-dark">
+                <input type="text" id="in-video-url" placeholder="URL Video Principal (.mp4)" class="input-dark">
+                <input type="text" id="in-exit-url" placeholder="URL Imagen Salida (Vertical)" class="input-dark">
+                
+                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pt-4 block">Textos</label>
+                <input type="text" id="in-logo-name" placeholder="Nombre de la Web" class="input-dark">
+                <input type="text" id="in-logo-sub" placeholder="Subtítulo del Distrito" class="input-dark">
             </div>
 
             <div id="admin-modules-list" class="space-y-4 border-t border-white/5 pt-6"></div>
@@ -171,7 +211,7 @@
                 <button onclick="addNewModule('info')" class="p-3 bg-orange-600/20 text-[10px] font-bold rounded-lg">+ INFO</button>
             </div>
 
-            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-xl font-bold uppercase tracking-widest shadow-xl">Sincronizar Datos</button>
+            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-xl font-bold uppercase shadow-xl hover:scale-95 transition-all">Sincronizar con la Nube</button>
         </div>
     </aside>
 
@@ -201,6 +241,15 @@
             sections: []
         };
 
+        // Función para formatear links de GitHub a Raw (Directo)
+        const formatGitHubUrl = (url) => {
+            if (!url) return "";
+            if (url.includes("github.com") && url.includes("/blob/")) {
+                return url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
+            }
+            return url;
+        };
+
         onSnapshot(doc(db, "forever_ja", "config"), (docSnap) => {
             if (docSnap.exists()) {
                 pageData = docSnap.data();
@@ -208,21 +257,26 @@
             }
         });
 
+        window.toggleMobileMenu = () => {
+            document.getElementById('mobile-menu').classList.toggle('active');
+        };
+
         window.setFilter = (f) => {
             activeFilter = f;
             document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-' + f).classList.add('active');
+            document.getElementById('nav-' + f)?.classList.add('active');
+            document.getElementById('m-nav-' + f)?.classList.add('active');
             renderPage();
         };
 
         window.showExit = () => {
             const screen = document.getElementById('exitScreen');
-            document.getElementById('v-exit-img').src = pageData.exitUrl || "https://via.placeholder.com/1080x1920";
+            document.getElementById('v-exit-img').src = formatGitHubUrl(pageData.exitUrl) || "https://via.placeholder.com/1080x1920";
             screen.style.display = 'block';
         };
 
         window.checkAdminAccess = () => {
-            const p = prompt("Clave:");
+            const p = prompt("Clave de Administración:");
             if (p === pageData.adminPass || p === "JA2025") toggleAdmin();
         };
 
@@ -237,7 +291,7 @@
             pageData.sections.push({ 
                 type, 
                 category: cat,
-                title: "Nuevo Item", 
+                title: "Nuevo Título", 
                 desc: "", 
                 link: "#", 
                 image: "", 
@@ -262,21 +316,28 @@
             pageData.mainVideo = document.getElementById('in-video-url').value;
             
             await setDoc(doc(db, "forever_ja", "config"), pageData);
-            alert("Listo");
+            alert("Sincronización Exitosa");
             toggleAdmin();
-            btn.innerText = "Sincronizar Datos";
+            btn.innerText = "Sincronizar con la Nube";
         };
 
         function renderPage() {
-            // Header y Logo
+            // Textos Globales
             document.getElementById('v-logo-name').innerText = pageData.logoName;
             document.getElementById('v-logo-sub').innerText = pageData.logoSub;
-            document.getElementById('v-main-video').src = pageData.mainVideo;
+            document.getElementById('v-display-title').innerText = pageData.logoName;
+            document.getElementById('v-display-sub').innerText = pageData.logoSub;
             
+            // Video Principal (Con formato corregido)
+            const videoEl = document.getElementById('v-main-video');
+            const newVideoSrc = formatGitHubUrl(pageData.mainVideo);
+            if (videoEl.src !== newVideoSrc) videoEl.src = newVideoSrc;
+            
+            // Logo / Icono logic
             const logoImg = document.getElementById('v-main-logo');
             const defLogo = document.getElementById('v-default-logo');
             if(pageData.logoUrl) {
-                logoImg.src = pageData.logoUrl;
+                logoImg.src = formatGitHubUrl(pageData.logoUrl);
                 logoImg.classList.remove('hidden');
                 defLogo.classList.add('hidden');
             } else {
@@ -287,7 +348,6 @@
             const container = document.getElementById('main-content');
             container.innerHTML = '';
 
-            // Filtrar secciones por categoría
             const filtered = pageData.sections.filter(s => s.category === activeFilter);
 
             filtered.forEach(sec => {
@@ -295,12 +355,12 @@
                 if(sec.type === 'team') {
                     html = `
                     <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <h2 class="text-4xl font-black mb-12">${sec.title}</h2>
+                        <h2 class="text-4xl font-black mb-12 tracking-tighter text-center md:text-left">${sec.title}</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             ${sec.members.map(m => `
-                                <div class="glass-card p-8 rounded-3xl border border-white/5">
+                                <div class="glass-card p-8 rounded-3xl border border-white/5 text-center">
                                     <h3 class="text-2xl font-bold">${m.name}</h3>
-                                    <p class="text-orange-500 font-bold uppercase text-[10px]">${m.role}</p>
+                                    <p class="text-orange-500 font-bold uppercase text-[10px] tracking-widest">${m.role}</p>
                                 </div>
                             `).join('')}
                         </div>
@@ -308,11 +368,13 @@
                 } else if(sec.type === 'download' || sec.type === 'info') {
                     html = `
                     <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <div class="glass-card rounded-[3rem] overflow-hidden flex flex-col md:flex-row items-center">
-                            <img src="${sec.image || 'https://via.placeholder.com/1920x1080'}" class="w-full md:w-1/2 aspect-video object-cover">
-                            <div class="p-8 md:p-16 space-y-6">
-                                <h2 class="text-4xl font-black">${sec.title}</h2>
-                                <p class="text-gray-400 leading-relaxed">${sec.desc}</p>
+                        <div class="glass-card rounded-[3rem] overflow-hidden flex flex-col md:flex-row items-center border border-white/5">
+                            <div class="w-full md:w-1/2 aspect-video overflow-hidden">
+                                <img src="${sec.image || 'https://via.placeholder.com/1920x1080'}" class="w-full h-full object-cover hover:scale-105 transition-all duration-700">
+                            </div>
+                            <div class="p-8 md:p-16 space-y-6 flex-1">
+                                <h2 class="text-3xl md:text-4xl font-black tracking-tighter">${sec.title}</h2>
+                                <p class="text-gray-400 leading-relaxed text-sm md:text-base">${sec.desc}</p>
                                 ${sec.type === 'download' ? `<a href="${sec.link}" target="_blank" class="btn-premium"><i data-lucide="download"></i> Descargar</a>` : ''}
                             </div>
                         </div>
@@ -330,6 +392,8 @@
             document.getElementById('in-logo-url').value = pageData.logoUrl || "";
             document.getElementById('in-exit-url').value = pageData.exitUrl || "";
             document.getElementById('in-video-url').value = pageData.mainVideo || "";
+            document.getElementById('in-logo-name').value = pageData.logoName || "";
+            document.getElementById('in-logo-sub').value = pageData.logoSub || "";
 
             pageData.sections.forEach((sec, idx) => {
                 let fields = `
@@ -342,18 +406,20 @@
                 
                 if(sec.type === 'team') {
                     fields += `
-                    <button onclick="pageData.sections[${idx}].members.push({name:'',role:''}); renderAdminList();" class="w-full p-2 bg-white/5 text-[10px] mb-2">+ Añadir Integrante</button>
+                    <button onclick="pageData.sections[${idx}].members.push({name:'',role:''}); renderAdminList();" class="w-full p-2 bg-white/5 text-[10px] mb-2 border border-dashed border-white/20 rounded-lg">+ Añadir Integrante</button>
                     ${sec.members.map((m, mIdx) => `
-                        <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div class="grid grid-cols-2 gap-2 mb-2 relative group">
                             <input type="text" placeholder="Nombre" value="${m.name}" onchange="pageData.sections[${idx}].members[${mIdx}].name=this.value" class="input-dark !p-2 !text-[10px]">
                             <input type="text" placeholder="Cargo" value="${m.role}" onchange="pageData.sections[${idx}].members[${mIdx}].role=this.value" class="input-dark !p-2 !text-[10px]">
+                            <button onclick="pageData.sections[${idx}].members.splice(${mIdx},1); renderAdminList();" class="absolute -right-2 -top-2 bg-red-600 text-white rounded-full w-4 h-4 text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition">×</button>
                         </div>
                     `).join('')}`;
                 } else {
                     fields += `
-                    <input type="file" onchange="handleFile(event, ${idx})" class="text-[10px] mb-2">
-                    <input type="text" placeholder="Enlace/Link" value="${sec.link || ''}" onchange="pageData.sections[${idx}].link=this.value" class="input-dark !p-2 text-xs mb-2">
-                    <textarea onchange="pageData.sections[${idx}].desc=this.value" class="input-dark !p-2 text-xs h-20">${sec.desc}</textarea>`;
+                    <label class="text-[9px] text-gray-500">Imagen de Fondo</label>
+                    <input type="file" onchange="handleFile(event, ${idx})" class="text-[10px] mb-2 block w-full">
+                    <input type="text" placeholder="Enlace/Link Externo" value="${sec.link || ''}" onchange="pageData.sections[${idx}].link=this.value" class="input-dark !p-2 text-xs mb-2">
+                    <textarea onchange="pageData.sections[${idx}].desc=this.value" class="input-dark !p-2 text-xs h-20" placeholder="Descripción...">${sec.desc}</textarea>`;
                 }
 
                 list.innerHTML += `
@@ -365,7 +431,7 @@
             lucide.createIcons();
         }
 
-        window.onload = () => { setFilter('resources'); };
+        window.onload = () => { setFilter('resources'); lucide.createIcons(); };
     </script>
 </body>
 </html>
