@@ -13,20 +13,30 @@
     <style>
         :root { 
             --orange-main: #ff6b00;
-            --orange-glow: rgba(255, 107, 0, 0.2); 
+            --orange-glow: rgba(255, 107, 0, 0.3); 
         }
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: #050505; color: white; scroll-behavior: smooth;
-            overflow-x: hidden;
+            overflow-x: hidden; position: relative;
         }
 
-        .glow-top { 
-            position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
-            width: 100%; height: 600px;
-            background: radial-gradient(circle at 50% 0%, var(--orange-glow) 0%, rgba(5,5,5,0) 70%);
-            z-index: -1;
+        /* --- EFECTO HUMO --- */
+        .smoke-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; opacity: 0.4;
+            filter: blur(60px);
+        }
+        .smoke-particle {
+            position: absolute; border-radius: 50%;
+            background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+            animation: moveSmoke 20s infinite linear alternate;
+        }
+        @keyframes moveSmoke {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            50% { transform: translate(20%, 30%) scale(1.5); opacity: 0.6; }
+            100% { transform: translate(-10%, 10%) scale(1.2); opacity: 0.4; }
         }
 
         .orange-gradient-text {
@@ -35,10 +45,9 @@
         }
 
         .glass-card {
-            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -54,100 +63,138 @@
         .admin-sidebar { 
             position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 550px;
             background: #0a0a0a; z-index: 100;
-            transform: translateX(100%); transition: transform 0.5s ease-in-out;
+            transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             border-left: 1px solid rgba(255,255,255,0.1);
         }
         .admin-sidebar.active { transform: translateX(0); }
 
         .input-dark {
             width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px; border-radius: 8px; font-size: 13px; color: white; outline: none;
+            padding: 12px; border-radius: 12px; font-size: 13px; color: white; outline: none;
         }
         .input-dark:focus { border-color: var(--orange-main); }
         
-        /* Custom scrollbar para el admin */
-        .admin-sidebar::-webkit-scrollbar { width: 5px; }
-        .admin-sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        /* Imagen Forzada 16:9 (1920x1080) */
+        .aspect-16-9 {
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        /* Animación suave para iconos */
+        .icon-float { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="glow-top"></div>
+    <!-- EFECTO HUMO DE FONDO -->
+    <div class="smoke-container">
+        <div class="smoke-particle" style="width: 800px; height: 800px; top: -10%; left: -10%;"></div>
+        <div class="smoke-particle" style="width: 600px; height: 600px; bottom: 10%; right: -5%; animation-duration: 25s;"></div>
+        <div class="smoke-particle" style="width: 500px; height: 500px; top: 40%; left: 30%; animation-duration: 30s;"></div>
+    </div>
 
     <!-- NAVBAR -->
     <nav class="fixed top-0 w-full z-40 border-b border-white/5 bg-black/40 backdrop-blur-xl">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
-                    <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+            <div class="flex items-center gap-3">
+                <!-- ICONO PERSONALIZADO CON ANIMACIÓN -->
+                <div class="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center icon-float shadow-lg shadow-orange-600/40">
+                    <i data-lucide="crown" class="w-6 h-6 text-white"></i>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-lg font-extrabold tracking-tight" id="v-logo-name">CARGANDO...</span>
+                    <span class="text-lg font-extrabold tracking-tighter" id="v-logo-name">CARGANDO...</span>
                     <span class="text-[8px] uppercase tracking-[0.3em] text-orange-500 font-bold" id="v-logo-sub">Distrito</span>
                 </div>
             </div>
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4 md:gap-6">
                 <button onclick="checkAdminAccess()" class="text-gray-400 hover:text-white transition">
                     <i data-lucide="lock" class="w-5 h-5"></i>
                 </button>
-                <a href="#anuncios" class="btn-premium text-sm">Novedades</a>
+                <a href="#anuncios" class="btn-premium text-xs md:text-sm">Novedades</a>
             </div>
         </div>
     </nav>
 
     <!-- HERO -->
-    <header class="pt-48 pb-20 px-6 text-center">
+    <header class="pt-48 pb-10 px-6 text-center">
         <div class="max-w-4xl mx-auto" data-aos="fade-up">
-            <span class="px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-500 text-xs font-bold mb-6 inline-block uppercase">Distrito Yare</span>
-            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-none mb-8 orange-gradient-text">Uniendo Generaciones Con Propósito.</h1>
+            <span class="px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-500 text-xs font-bold mb-6 inline-block uppercase tracking-widest">Portal Oficial</span>
+            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tighter leading-none mb-8 orange-gradient-text">Uniendo Generaciones Con Propósito.</h1>
         </div>
     </header>
 
+    <!-- VIDEO ÚNICO PRINCIPAL (GITHUB) -->
+    <section id="anuncios" class="max-w-6xl mx-auto px-6 mb-20" data-aos="zoom-in">
+        <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video border border-white/10 shadow-2xl">
+            <video id="v-main-video" src="" controls class="w-full h-full bg-black"></video>
+        </div>
+    </section>
+
     <!-- CONTENIDO DINÁMICO -->
-    <main id="main-content" class="pb-32 space-y-40">
+    <main id="main-content" class="pb-32 space-y-24 md:space-y-40">
         <!-- Las secciones se cargan aquí -->
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-[#030303] border-t border-white/5 py-20 px-6 mt-20">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="font-bold tracking-tighter text-xl block mb-4">FOREVER JA</span>
+    <footer class="bg-[#030303] border-t border-white/5 py-20 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="text-center md:text-left">
+                <span class="font-bold tracking-tighter text-2xl block mb-4">FOREVER JA</span>
                 <p id="v-footer-text" class="text-gray-500 text-sm leading-relaxed max-w-md"></p>
             </div>
-            <div id="v-footer-video-container" class="glass-card rounded-2xl overflow-hidden aspect-video border border-white/10"></div>
+            <div class="flex gap-4">
+                <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center hover:bg-orange-600 transition cursor-pointer">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                </div>
+                <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center hover:bg-orange-600 transition cursor-pointer">
+                    <i data-lucide="facebook" class="w-5 h-5"></i>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- PANEL ADMINISTRADOR -->
     <aside id="adminPanel" class="admin-sidebar p-8 overflow-y-auto">
         <div class="flex justify-between items-center mb-8 pb-4 border-b border-white/10">
-            <h2 class="text-xl font-bold text-orange-500 flex items-center gap-2"><i data-lucide="settings"></i> Panel Admin</h2>
+            <h2 class="text-xl font-bold text-orange-500 flex items-center gap-2"><i data-lucide="settings"></i> Administración</h2>
             <button onclick="toggleAdmin()" class="p-2 hover:bg-white/10 rounded-full transition"><i data-lucide="x"></i></button>
         </div>
 
         <div class="space-y-8">
-            <!-- CONFIG BÁSICA -->
+            <!-- VIDEO PRINCIPAL -->
             <div class="space-y-4">
-                <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Ajustes Generales</label>
-                <input type="text" id="in-logo-name" placeholder="Nombre de la Web" class="input-dark">
-                <input type="text" id="in-logo-sub" placeholder="Nombre del Distrito" class="input-dark">
-                <input type="password" id="in-admin-pass" placeholder="Nueva Contraseña" class="input-dark">
+                <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Link Video GitHub (.mp4)</label>
+                <input type="text" id="in-video-url" placeholder="URL de video principal" class="input-dark">
             </div>
 
-            <div id="admin-modules-list" class="space-y-6">
-                <!-- Módulos cargados por JS -->
+            <div class="space-y-4">
+                <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Textos de Marca</label>
+                <input type="text" id="in-logo-name" placeholder="Nombre de la Web" class="input-dark">
+                <input type="text" id="in-logo-sub" placeholder="Distrito" class="input-dark">
             </div>
+
+            <div id="admin-modules-list" class="space-y-6"></div>
 
             <!-- BOTONES AGREGAR -->
-            <div class="grid grid-cols-3 gap-2">
-                <button onclick="addNewModule('video')" class="p-3 bg-orange-600/10 text-orange-500 text-[10px] font-bold rounded-lg border border-orange-600/20 hover:bg-orange-600 hover:text-white transition">+ VIDEO</button>
-                <button onclick="addNewModule('download')" class="p-3 bg-blue-600/10 text-blue-500 text-[10px] font-bold rounded-lg border border-blue-600/20 hover:bg-blue-600 hover:text-white transition">+ RECURSO</button>
-                <button onclick="addNewModule('team')" class="p-3 bg-purple-600/10 text-purple-500 text-[10px] font-bold rounded-lg border border-purple-600/20 hover:bg-purple-600 hover:text-white transition">+ EQUIPO</button>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="addNewModule('download')" class="p-4 bg-blue-600/10 text-blue-500 text-xs font-bold rounded-2xl border border-blue-600/20 hover:bg-blue-600 hover:text-white transition">
+                    + SECCIÓN DESCARGA
+                </button>
+                <button onclick="addNewModule('info')" class="p-4 bg-orange-600/10 text-orange-500 text-xs font-bold rounded-2xl border border-orange-600/20 hover:bg-orange-600 hover:text-white transition">
+                    + SECCIÓN INFORMATIVA
+                </button>
+                <button onclick="addNewModule('team')" class="p-4 bg-purple-600/10 text-purple-500 text-xs font-bold rounded-2xl border border-purple-600/20 hover:bg-purple-600 hover:text-white transition col-span-2">
+                    + EQUIPO DIRECTIVO
+                </button>
             </div>
 
-            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-xl font-bold uppercase tracking-widest text-sm hover:scale-[1.02] active:scale-95 transition-all">
-                Guardar en Firebase
+            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-2xl font-bold uppercase tracking-widest shadow-xl shadow-orange-600/20 hover:scale-95 transition-all">
+                Sincronizar Datos
             </button>
         </div>
     </aside>
@@ -173,11 +220,11 @@
             adminPass: "JA2025",
             logoName: "FOREVER JA",
             logoSub: "Distrito Yare",
+            mainVideo: "",
             footer: "Liderando con amor y servicio para la gloria de Dios.",
             sections: []
         };
 
-        // Escucha en tiempo real
         onSnapshot(doc(db, "forever_ja", "config"), (docSnap) => {
             if (docSnap.exists()) {
                 pageData = docSnap.data();
@@ -186,9 +233,9 @@
         });
 
         window.checkAdminAccess = () => {
-            const pass = prompt("Clave de Seguridad (Defecto: JA2025):");
+            const pass = prompt("Clave Admin:");
             if (pass === pageData.adminPass || pass === "JA2025") window.toggleAdmin();
-            else alert("Acceso Denegado");
+            else alert("Error de clave");
         };
 
         window.toggleAdmin = () => {
@@ -198,25 +245,19 @@
         };
 
         window.addNewModule = (type) => {
-            const mod = { type, title: "Nueva Sección" };
-            if(type === 'download') { 
-                mod.link = "#"; 
-                mod.desc = "Descripción breve del recurso."; 
-                mod.image = ""; 
-            }
-            if(type === 'video') { mod.videoUrl = ""; }
+            const mod = { type, title: "Nuevo Título" };
+            if(type === 'download') { mod.link = "#"; mod.desc = ""; mod.image = ""; }
+            if(type === 'info') { mod.desc = "Escribe aquí tu información. Puedes usar enlaces."; mod.image = ""; }
             if(type === 'team') { mod.members = []; }
             pageData.sections.push(mod);
             renderAdminList();
         };
 
-        // Manejo de carga de imagen local
         window.handleFile = (e, idx) => {
             const file = e.target.files[0];
             const reader = new FileReader();
             reader.onloadend = () => {
                 pageData.sections[idx].image = reader.result;
-                alert("Imagen cargada. Recuerda darle a Guardar en Firebase.");
                 renderAdminList();
             };
             if(file) reader.readAsDataURL(file);
@@ -224,81 +265,76 @@
 
         window.updateVal = (idx, field, val) => { pageData.sections[idx][field] = val; };
         
-        window.updateMember = (sIdx, mIdx, field, val) => {
-            pageData.sections[sIdx].members[mIdx][field] = val;
-        };
-
-        window.addLeader = (idx) => {
-            pageData.sections[idx].members.push({name: "", role: "", phone: "", email: ""});
-            renderAdminList();
-        };
-
-        window.removeModule = (idx) => {
-            if(confirm("¿Eliminar sección?")) { pageData.sections.splice(idx, 1); renderAdminList(); }
-        };
-
         window.saveAllChanges = async () => {
             const btn = document.getElementById('saveBtn');
-            btn.innerText = "Sincronizando...";
-            
+            btn.innerText = "Guardando...";
             pageData.logoName = document.getElementById('in-logo-name').value;
             pageData.logoSub = document.getElementById('in-logo-sub').value;
-            const np = document.getElementById('in-admin-pass').value;
-            if(np) pageData.adminPass = np;
+            pageData.mainVideo = document.getElementById('in-video-url').value;
 
             try {
                 await setDoc(doc(db, "forever_ja", "config"), pageData);
-                alert("¡Actualizado!");
+                alert("Actualizado Correctamente");
                 window.toggleAdmin();
-            } catch (e) { alert("Error de permisos en Firebase."); }
-            btn.innerText = "Guardar en Firebase";
+            } catch (e) { alert("Error en Firebase"); }
+            btn.innerText = "Sincronizar Datos";
         };
 
         function renderPage() {
             document.getElementById('v-logo-name').innerText = pageData.logoName;
             document.getElementById('v-logo-sub').innerText = pageData.logoSub;
             document.getElementById('v-footer-text').innerText = pageData.footer;
+            document.getElementById('v-main-video').src = pageData.mainVideo || "";
 
             const container = document.getElementById('main-content');
             container.innerHTML = '';
 
             pageData.sections.forEach((sec) => {
                 let html = '';
-                if(sec.type === 'video') {
-                    html = `
-                    <section id="anuncios" class="max-w-6xl mx-auto px-6" data-aos="fade-up">
-                        <h2 class="text-4xl font-black text-center mb-10 tracking-tighter">${sec.title}</h2>
-                        <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video border border-white/10">
-                            <video src="${sec.videoUrl}" controls class="w-full h-full bg-black"></video>
-                        </div>
-                    </section>`;
-                } else if(sec.type === 'download') {
+                // SECCIÓN DESCARGA (CON BOTÓN)
+                if(sec.type === 'download') {
                     html = `
                     <section class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <div class="glass-card rounded-[3rem] overflow-hidden flex flex-col lg:flex-row items-center">
-                            <div class="w-full lg:w-1/2 h-[400px] lg:h-[600px]">
-                                <img src="${sec.image || 'https://via.placeholder.com/1920x1080'}" class="w-full h-full object-cover">
+                        <div class="glass-card rounded-[3rem] overflow-hidden flex flex-col md:flex-row items-center">
+                            <div class="w-full md:w-1/2 overflow-hidden">
+                                <img src="${sec.image || 'https://via.placeholder.com/1920x1080'}" class="aspect-16-9 hover:scale-105 transition-transform duration-700">
                             </div>
-                            <div class="w-full lg:w-1/2 p-12 lg:p-20 space-y-6">
-                                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter">${sec.title}</h2>
-                                <p class="text-gray-400 text-lg leading-relaxed">${sec.desc}</p>
-                                <a href="${sec.link}" target="_blank" class="btn-premium"><i data-lucide="download"></i> Descargar</a>
+                            <div class="w-full md:w-1/2 p-8 md:p-20 space-y-6">
+                                <h2 class="text-3xl md:text-5xl font-black tracking-tighter">${sec.title}</h2>
+                                <p class="text-gray-400 text-lg">${sec.desc}</p>
+                                <a href="${sec.link}" target="_blank" class="btn-premium"><i data-lucide="download"></i> Obtener Recurso</a>
                             </div>
                         </div>
                     </section>`;
-                } else if(sec.type === 'team') {
+                } 
+                // SECCIÓN INFO (SIN BOTÓN, CON ENLACES EN TEXTO)
+                else if(sec.type === 'info') {
+                    html = `
+                    <section class="max-w-7xl mx-auto px-6" data-aos="fade-up">
+                        <div class="glass-card rounded-[3rem] overflow-hidden flex flex-col md:flex-row-reverse items-center">
+                            <div class="w-full md:w-1/2 overflow-hidden">
+                                <img src="${sec.image || 'https://via.placeholder.com/1920x1080'}" class="aspect-16-9 hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <div class="w-full md:w-1/2 p-8 md:p-20 space-y-6 text-left">
+                                <h2 class="text-3xl md:text-5xl font-black tracking-tighter">${sec.title}</h2>
+                                <div class="text-gray-400 text-lg leading-relaxed content-box">${sec.desc}</div>
+                            </div>
+                        </div>
+                    </section>`;
+                }
+                // SECCIÓN EQUIPO
+                else if(sec.type === 'team') {
                     html = `
                     <section class="max-w-7xl mx-auto px-6" data-aos="fade-up">
                         <h2 class="text-4xl font-black text-center mb-16 tracking-tighter">${sec.title}</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                             ${sec.members.map(m => `
                                 <div class="glass-card p-8 rounded-[2rem] border border-white/5">
-                                    <div class="w-10 h-10 bg-orange-600/20 rounded-lg flex items-center justify-center mb-6"><i data-lucide="user" class="text-orange-500"></i></div>
-                                    <h3 class="text-2xl font-bold mb-1">${m.name || 'Sin Nombre'}</h3>
-                                    <p class="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-6">${m.role || 'Cargo'}</p>
+                                    <h3 class="text-2xl font-bold mb-1">${m.name}</h3>
+                                    <p class="text-orange-500 text-[10px] font-black uppercase mb-6">${m.role}</p>
                                     <div class="space-y-2 pt-6 border-t border-white/5 text-gray-500 text-sm">
-                                        <div class="flex items-center gap-2"><i data-lucide="phone" class="w-4"></i> ${m.phone}</div>
-                                        <div class="flex items-center gap-2"><i data-lucide="mail" class="w-4"></i> ${m.email}</div>
+                                        <div><i data-lucide="phone" class="w-4 inline mr-2"></i> ${m.phone}</div>
+                                        <div><i data-lucide="mail" class="w-4 inline mr-2"></i> ${m.email}</div>
                                     </div>
                                 </div>
                             `).join('')}
@@ -313,48 +349,42 @@
         function renderAdminList() {
             const list = document.getElementById('admin-modules-list');
             list.innerHTML = '';
-            document.getElementById('in-logo-name').value = pageData.logoName;
-            document.getElementById('in-logo-sub').value = pageData.logoSub;
+            document.getElementById('in-video-url').value = pageData.mainVideo || "";
 
             pageData.sections.forEach((sec, idx) => {
                 let fields = `<input type="text" value="${sec.title}" onchange="updateVal(${idx}, 'title', this.value)" class="input-dark font-bold text-orange-500 mb-2">`;
                 
-                if(sec.type === 'video') {
-                    fields += `<input type="text" placeholder="URL .mp4" value="${sec.videoUrl || ''}" onchange="updateVal(${idx}, 'videoUrl', this.value)" class="input-dark text-xs">`;
-                } else if(sec.type === 'download') {
+                if(sec.type === 'download' || sec.type === 'info') {
                     fields += `
                     <div class="space-y-2">
-                        <label class="text-[9px] text-gray-400">Imagen (Cargar desde PC)</label>
-                        <input type="file" onchange="handleFile(event, ${idx})" class="text-[10px] block w-full text-gray-500">
-                        <input type="text" placeholder="Link de descarga" value="${sec.link || ''}" onchange="updateVal(${idx}, 'link', this.value)" class="input-dark text-xs">
-                        <textarea placeholder="Descripción" onchange="updateVal(${idx}, 'desc', this.value)" class="input-dark text-xs h-20">${sec.desc || ''}</textarea>
+                        <label class="text-[9px] text-gray-400">Imagen Horizontal (16:9)</label>
+                        <input type="file" onchange="handleFile(event, ${idx})" class="text-[10px] block w-full text-gray-500 mb-2">
+                        ${sec.type === 'download' ? `<input type="text" placeholder="Link de descarga" value="${sec.link || ''}" onchange="updateVal(${idx}, 'link', this.value)" class="input-dark text-xs">` : ''}
+                        <textarea placeholder="Texto o información..." onchange="updateVal(${idx}, 'desc', this.value)" class="input-dark text-xs h-24">${sec.desc || ''}</textarea>
                     </div>`;
                 } else if(sec.type === 'team') {
                     fields += `
-                    <div class="space-y-3 mt-4">
-                        ${sec.members.map((m, mIdx) => `
-                            <div class="bg-white/5 p-3 rounded-xl border border-white/5 space-y-2 relative">
-                                <button onclick="pageData.sections[${idx}].members.splice(${mIdx},1); renderAdminList();" class="absolute top-2 right-2 text-red-500"><i data-lucide="trash-2" class="w-3"></i></button>
-                                <input type="text" placeholder="Nombre" value="${m.name}" onchange="updateMember(${idx}, ${mIdx}, 'name', this.value)" class="input-dark !text-[11px] !p-1.5">
-                                <input type="text" placeholder="Cargo" value="${m.role}" onchange="updateMember(${idx}, ${mIdx}, 'role', this.value)" class="input-dark !text-[11px] !p-1.5">
-                                <input type="text" placeholder="Teléfono" value="${m.phone}" onchange="updateMember(${idx}, ${mIdx}, 'phone', this.value)" class="input-dark !text-[11px] !p-1.5">
-                                <input type="text" placeholder="Correo" value="${m.email}" onchange="updateMember(${idx}, ${mIdx}, 'email', this.value)" class="input-dark !text-[11px] !p-1.5">
-                            </div>
-                        `).join('')}
-                        <button onclick="addLeader(${idx})" class="w-full py-2 bg-purple-600/10 border border-purple-600/20 rounded-lg text-[10px] text-purple-500">+ Miembro</button>
-                    </div>`;
+                    <button onclick="pageData.sections[${idx}].members.push({name:'',role:'',phone:'',email:''}); renderAdminList();" class="w-full py-2 bg-white/5 rounded-lg text-xs">+ Miembro</button>
+                    ${sec.members.map((m, mIdx) => `
+                        <div class="mt-2 p-3 bg-black/40 rounded-xl space-y-1 relative">
+                            <button onclick="pageData.sections[${idx}].members.splice(${mIdx},1); renderAdminList();" class="absolute top-1 right-1 text-red-500">×</button>
+                            <input type="text" placeholder="Nombre" value="${m.name}" onchange="pageData.sections[${idx}].members[${mIdx}].name=this.value" class="input-dark !p-1 !text-[10px]">
+                            <input type="text" placeholder="Cargo" value="${m.role}" onchange="pageData.sections[${idx}].members[${mIdx}].role=this.value" class="input-dark !p-1 !text-[10px]">
+                        </div>
+                    `).join('')}`;
                 }
 
                 list.innerHTML += `
                 <div class="bg-white/5 p-5 rounded-2xl border border-white/10 relative">
-                    <button onclick="removeModule(${idx})" class="absolute top-4 right-4 text-gray-600 hover:text-red-500"><i data-lucide="trash-2" class="w-4"></i></button>
-                    <span class="text-[9px] uppercase font-black text-gray-500 block mb-3 tracking-widest">${sec.type}</span>
+                    <button onclick="removeModule(${idx})" class="absolute top-4 right-4 text-gray-600">×</button>
+                    <span class="text-[9px] uppercase font-black text-gray-500 block mb-2">${sec.type}</span>
                     ${fields}
                 </div>`;
             });
             lucide.createIcons();
         }
 
+        window.removeModule = (idx) => { pageData.sections.splice(idx, 1); renderAdminList(); };
         window.onload = () => { lucide.createIcons(); AOS.init({ duration: 1000, once: true }); };
     </script>
 </body>
