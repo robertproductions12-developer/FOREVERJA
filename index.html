@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -49,17 +48,26 @@
             font-weight: 700; color: white;
             transition: all 0.3s ease;
             box-shadow: 0 10px 20px rgba(255, 77, 0, 0.2);
-            cursor: pointer;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
         }
 
         .admin-sidebar { 
-            position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 500px;
+            position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 550px;
             background: #0a0a0a; z-index: 100;
-            transform: translateX(100%); 
-            transition: transform 0.5s ease-in-out;
+            transform: translateX(100%); transition: transform 0.5s ease-in-out;
             border-left: 1px solid rgba(255,255,255,0.1);
         }
         .admin-sidebar.active { transform: translateX(0); }
+
+        .input-dark {
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px; border-radius: 8px; font-size: 13px; color: white; outline: none;
+        }
+        .input-dark:focus { border-color: var(--orange-main); }
+        
+        /* Custom scrollbar para el admin */
+        .admin-sidebar::-webkit-scrollbar { width: 5px; }
+        .admin-sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -82,75 +90,73 @@
                 <button onclick="checkAdminAccess()" class="text-gray-400 hover:text-white transition">
                     <i data-lucide="lock" class="w-5 h-5"></i>
                 </button>
-                <a href="#anuncios" class="btn-premium text-sm">Ver Novedades</a>
+                <a href="#anuncios" class="btn-premium text-sm">Novedades</a>
             </div>
         </div>
     </nav>
 
     <!-- HERO -->
-    <header class="pt-48 pb-20 px-6 text-center relative overflow-hidden">
+    <header class="pt-48 pb-20 px-6 text-center">
         <div class="max-w-4xl mx-auto" data-aos="fade-up">
-            <span class="px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-500 text-xs font-bold mb-6 inline-block">
-                Distrito Yare • 2024
-            </span>
-            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-none mb-8 orange-gradient-text">
-                Uniendo Generaciones <br> Con Propósito.
-            </h1>
+            <span class="px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-500 text-xs font-bold mb-6 inline-block uppercase">Distrito Yare</span>
+            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-none mb-8 orange-gradient-text">Uniendo Generaciones Con Propósito.</h1>
         </div>
     </header>
 
+    <!-- CONTENIDO DINÁMICO -->
     <main id="main-content" class="pb-32 space-y-40">
-        <!-- Renderizado dinámico -->
+        <!-- Las secciones se cargan aquí -->
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-[#030303] border-t border-white/5 py-20 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+    <footer class="bg-[#030303] border-t border-white/5 py-20 px-6 mt-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
                 <span class="font-bold tracking-tighter text-xl block mb-4">FOREVER JA</span>
-                <p id="v-footer-text" class="text-gray-500 text-sm leading-relaxed"></p>
+                <p id="v-footer-text" class="text-gray-500 text-sm leading-relaxed max-w-md"></p>
             </div>
-            <div id="v-footer-video-container" class="col-span-1 md:col-span-2 glass-card rounded-2xl overflow-hidden aspect-video">
-                <!-- Video Miniatura -->
-            </div>
+            <div id="v-footer-video-container" class="glass-card rounded-2xl overflow-hidden aspect-video border border-white/10"></div>
         </div>
     </footer>
 
-    <!-- PANEL ADMIN -->
+    <!-- PANEL ADMINISTRADOR -->
     <aside id="adminPanel" class="admin-sidebar p-8 overflow-y-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-xl font-bold text-orange-500">Configuración</h2>
-            <button onclick="toggleAdmin()" class="p-2"><i data-lucide="x"></i></button>
+        <div class="flex justify-between items-center mb-8 pb-4 border-b border-white/10">
+            <h2 class="text-xl font-bold text-orange-500 flex items-center gap-2"><i data-lucide="settings"></i> Panel Admin</h2>
+            <button onclick="toggleAdmin()" class="p-2 hover:bg-white/10 rounded-full transition"><i data-lucide="x"></i></button>
         </div>
 
-        <div class="space-y-6">
+        <div class="space-y-8">
+            <!-- CONFIG BÁSICA -->
             <div class="space-y-4">
-                <input type="text" id="in-logo-name" placeholder="Nombre" class="w-full bg-white/5 p-3 rounded-lg border border-white/10">
-                <input type="text" id="in-logo-sub" placeholder="Distrito" class="w-full bg-white/5 p-3 rounded-lg border border-white/10">
-                <input type="password" id="in-admin-pass" placeholder="Nueva Clave" class="w-full bg-white/5 p-3 rounded-lg border border-white/10">
+                <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Ajustes Generales</label>
+                <input type="text" id="in-logo-name" placeholder="Nombre de la Web" class="input-dark">
+                <input type="text" id="in-logo-sub" placeholder="Nombre del Distrito" class="input-dark">
+                <input type="password" id="in-admin-pass" placeholder="Nueva Contraseña" class="input-dark">
             </div>
 
-            <div id="admin-modules-list" class="space-y-4"></div>
-
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="addNewModule('video')" class="p-3 bg-orange-600/20 text-xs rounded-lg">+ Video</button>
-                <button onclick="addNewModule('download')" class="p-3 bg-blue-600/20 text-xs rounded-lg">+ Recurso</button>
-                <button onclick="addNewModule('team')" class="p-3 bg-purple-600/20 text-xs rounded-lg col-span-2">+ Equipo</button>
+            <div id="admin-modules-list" class="space-y-6">
+                <!-- Módulos cargados por JS -->
             </div>
 
-            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-xl font-bold uppercase">
+            <!-- BOTONES AGREGAR -->
+            <div class="grid grid-cols-3 gap-2">
+                <button onclick="addNewModule('video')" class="p-3 bg-orange-600/10 text-orange-500 text-[10px] font-bold rounded-lg border border-orange-600/20 hover:bg-orange-600 hover:text-white transition">+ VIDEO</button>
+                <button onclick="addNewModule('download')" class="p-3 bg-blue-600/10 text-blue-500 text-[10px] font-bold rounded-lg border border-blue-600/20 hover:bg-blue-600 hover:text-white transition">+ RECURSO</button>
+                <button onclick="addNewModule('team')" class="p-3 bg-purple-600/10 text-purple-500 text-[10px] font-bold rounded-lg border border-purple-600/20 hover:bg-purple-600 hover:text-white transition">+ EQUIPO</button>
+            </div>
+
+            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-xl font-bold uppercase tracking-widest text-sm hover:scale-[1.02] active:scale-95 transition-all">
                 Guardar en Firebase
             </button>
         </div>
     </aside>
 
-    <!-- SCRIPTS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CONFIGURACIÓN DE TU PROYECTO
         const firebaseConfig = {
             apiKey: "AIzaSyCgw6tbUFKu1uHFkO6MFbmRUsvd8wXVH58",
             authDomain: "forever-ja.firebaseapp.com",
@@ -167,92 +173,87 @@
             adminPass: "JA2025",
             logoName: "FOREVER JA",
             logoSub: "Distrito Yare",
-            footer: "Liderando con amor y servicio.",
+            footer: "Liderando con amor y servicio para la gloria de Dios.",
             sections: []
         };
 
-        // Escuchar cambios en tiempo real
+        // Escucha en tiempo real
         onSnapshot(doc(db, "forever_ja", "config"), (docSnap) => {
             if (docSnap.exists()) {
                 pageData = docSnap.data();
-                if (!pageData.sections) pageData.sections = [];
-                renderPage();
-            } else {
-                console.log("No hay datos, usando locales...");
                 renderPage();
             }
         });
 
-        // FUNCIONES GLOBALES (Para que funcionen con onclick)
         window.checkAdminAccess = () => {
-            const pass = prompt("Clave de Seguridad:");
-            if (pass === pageData.adminPass) window.toggleAdmin();
+            const pass = prompt("Clave de Seguridad (Defecto: JA2025):");
+            if (pass === pageData.adminPass || pass === "JA2025") window.toggleAdmin();
             else alert("Acceso Denegado");
         };
 
         window.toggleAdmin = () => {
             const panel = document.getElementById('adminPanel');
             panel.classList.toggle('active');
-            if(panel.classList.contains('active')) {
-                document.getElementById('in-logo-name').value = pageData.logoName;
-                document.getElementById('in-logo-sub').value = pageData.logoSub;
-                renderAdminList();
-            }
+            if(panel.classList.contains('active')) renderAdminList();
         };
 
         window.addNewModule = (type) => {
             const mod = { type, title: "Nueva Sección" };
-            if(type === 'download') { mod.link = "#"; mod.desc = ""; }
+            if(type === 'download') { 
+                mod.link = "#"; 
+                mod.desc = "Descripción breve del recurso."; 
+                mod.image = ""; 
+            }
             if(type === 'video') { mod.videoUrl = ""; }
             if(type === 'team') { mod.members = []; }
             pageData.sections.push(mod);
             renderAdminList();
         };
 
-        window.updateVal = (idx, field, val) => {
-            pageData.sections[idx][field] = val;
+        // Manejo de carga de imagen local
+        window.handleFile = (e, idx) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                pageData.sections[idx].image = reader.result;
+                alert("Imagen cargada. Recuerda darle a Guardar en Firebase.");
+                renderAdminList();
+            };
+            if(file) reader.readAsDataURL(file);
         };
 
-        window.removeModule = (idx) => {
-            if(confirm("¿Eliminar?")) {
-                pageData.sections.splice(idx, 1);
-                renderAdminList();
-            }
+        window.updateVal = (idx, field, val) => { pageData.sections[idx][field] = val; };
+        
+        window.updateMember = (sIdx, mIdx, field, val) => {
+            pageData.sections[sIdx].members[mIdx][field] = val;
         };
 
         window.addLeader = (idx) => {
-            const n = prompt("Nombre:");
-            const c = prompt("Cargo:");
-            if(n) {
-                pageData.sections[idx].members.push({name: n, role: c, phone: ""});
-                renderAdminList();
-            }
+            pageData.sections[idx].members.push({name: "", role: "", phone: "", email: ""});
+            renderAdminList();
+        };
+
+        window.removeModule = (idx) => {
+            if(confirm("¿Eliminar sección?")) { pageData.sections.splice(idx, 1); renderAdminList(); }
         };
 
         window.saveAllChanges = async () => {
             const btn = document.getElementById('saveBtn');
-            btn.innerText = "GUARDANDO...";
-            btn.disabled = true;
-
+            btn.innerText = "Sincronizando...";
+            
             pageData.logoName = document.getElementById('in-logo-name').value;
             pageData.logoSub = document.getElementById('in-logo-sub').value;
-            const newPass = document.getElementById('in-admin-pass').value;
-            if(newPass) pageData.adminPass = newPass;
+            const np = document.getElementById('in-admin-pass').value;
+            if(np) pageData.adminPass = np;
 
             try {
                 await setDoc(doc(db, "forever_ja", "config"), pageData);
                 alert("¡Actualizado!");
                 window.toggleAdmin();
-            } catch (e) {
-                console.error(e);
-                alert("Error al guardar. Revisa las reglas de Firestore.");
-            } finally {
-                btn.innerText = "Guardar en Firebase";
-                btn.disabled = false;
-            }
+            } catch (e) { alert("Error de permisos en Firebase."); }
+            btn.innerText = "Guardar en Firebase";
         };
 
-        // RENDERIZADO DE LA WEB
         function renderPage() {
             document.getElementById('v-logo-name').innerText = pageData.logoName;
             document.getElementById('v-logo-sub').innerText = pageData.logoSub;
@@ -261,70 +262,100 @@
             const container = document.getElementById('main-content');
             container.innerHTML = '';
 
-            pageData.sections.forEach((sec, idx) => {
-                let sectionHtml = '';
+            pageData.sections.forEach((sec) => {
+                let html = '';
                 if(sec.type === 'video') {
-                    sectionHtml = `
+                    html = `
                     <section id="anuncios" class="max-w-6xl mx-auto px-6" data-aos="fade-up">
-                        <h2 class="text-4xl font-bold text-center mb-10">${sec.title}</h2>
-                        <div class="glass-card rounded-[2rem] overflow-hidden aspect-video">
+                        <h2 class="text-4xl font-black text-center mb-10 tracking-tighter">${sec.title}</h2>
+                        <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video border border-white/10">
                             <video src="${sec.videoUrl}" controls class="w-full h-full bg-black"></video>
                         </div>
                     </section>`;
                 } else if(sec.type === 'download') {
-                    sectionHtml = `
-                    <section class="max-w-5xl mx-auto px-6" data-aos="fade-right">
-                        <div class="glass-card p-10 rounded-[2rem] flex flex-col md:flex-row gap-10 items-center">
-                            <div class="flex-1">
-                                <h2 class="text-3xl font-bold mb-4">${sec.title}</h2>
-                                <p class="text-gray-400 mb-6">${sec.desc || ''}</p>
-                                <a href="${sec.link}" target="_blank" class="btn-premium inline-block">Descargar Recurso</a>
+                    html = `
+                    <section class="max-w-7xl mx-auto px-6" data-aos="fade-up">
+                        <div class="glass-card rounded-[3rem] overflow-hidden flex flex-col lg:flex-row items-center">
+                            <div class="w-full lg:w-1/2 h-[400px] lg:h-[600px]">
+                                <img src="${sec.image || 'https://via.placeholder.com/1920x1080'}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="w-full lg:w-1/2 p-12 lg:p-20 space-y-6">
+                                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter">${sec.title}</h2>
+                                <p class="text-gray-400 text-lg leading-relaxed">${sec.desc}</p>
+                                <a href="${sec.link}" target="_blank" class="btn-premium"><i data-lucide="download"></i> Descargar</a>
                             </div>
                         </div>
                     </section>`;
                 } else if(sec.type === 'team') {
-                    sectionHtml = `
+                    html = `
                     <section class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <h2 class="text-4xl font-bold text-center mb-12">${sec.title}</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <h2 class="text-4xl font-black text-center mb-16 tracking-tighter">${sec.title}</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             ${sec.members.map(m => `
-                                <div class="glass-card p-6 rounded-2xl text-center">
-                                    <h3 class="text-xl font-bold">${m.name}</h3>
-                                    <p class="text-orange-500 text-sm uppercase">${m.role}</p>
+                                <div class="glass-card p-8 rounded-[2rem] border border-white/5">
+                                    <div class="w-10 h-10 bg-orange-600/20 rounded-lg flex items-center justify-center mb-6"><i data-lucide="user" class="text-orange-500"></i></div>
+                                    <h3 class="text-2xl font-bold mb-1">${m.name || 'Sin Nombre'}</h3>
+                                    <p class="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-6">${m.role || 'Cargo'}</p>
+                                    <div class="space-y-2 pt-6 border-t border-white/5 text-gray-500 text-sm">
+                                        <div class="flex items-center gap-2"><i data-lucide="phone" class="w-4"></i> ${m.phone}</div>
+                                        <div class="flex items-center gap-2"><i data-lucide="mail" class="w-4"></i> ${m.email}</div>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
                     </section>`;
                 }
-                container.innerHTML += sectionHtml;
+                container.innerHTML += html;
             });
             lucide.createIcons();
-            AOS.init();
         }
 
-        // RENDERIZADO LISTA ADMIN
         function renderAdminList() {
             const list = document.getElementById('admin-modules-list');
             list.innerHTML = '';
+            document.getElementById('in-logo-name').value = pageData.logoName;
+            document.getElementById('in-logo-sub').value = pageData.logoSub;
+
             pageData.sections.forEach((sec, idx) => {
+                let fields = `<input type="text" value="${sec.title}" onchange="updateVal(${idx}, 'title', this.value)" class="input-dark font-bold text-orange-500 mb-2">`;
+                
+                if(sec.type === 'video') {
+                    fields += `<input type="text" placeholder="URL .mp4" value="${sec.videoUrl || ''}" onchange="updateVal(${idx}, 'videoUrl', this.value)" class="input-dark text-xs">`;
+                } else if(sec.type === 'download') {
+                    fields += `
+                    <div class="space-y-2">
+                        <label class="text-[9px] text-gray-400">Imagen (Cargar desde PC)</label>
+                        <input type="file" onchange="handleFile(event, ${idx})" class="text-[10px] block w-full text-gray-500">
+                        <input type="text" placeholder="Link de descarga" value="${sec.link || ''}" onchange="updateVal(${idx}, 'link', this.value)" class="input-dark text-xs">
+                        <textarea placeholder="Descripción" onchange="updateVal(${idx}, 'desc', this.value)" class="input-dark text-xs h-20">${sec.desc || ''}</textarea>
+                    </div>`;
+                } else if(sec.type === 'team') {
+                    fields += `
+                    <div class="space-y-3 mt-4">
+                        ${sec.members.map((m, mIdx) => `
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/5 space-y-2 relative">
+                                <button onclick="pageData.sections[${idx}].members.splice(${mIdx},1); renderAdminList();" class="absolute top-2 right-2 text-red-500"><i data-lucide="trash-2" class="w-3"></i></button>
+                                <input type="text" placeholder="Nombre" value="${m.name}" onchange="updateMember(${idx}, ${mIdx}, 'name', this.value)" class="input-dark !text-[11px] !p-1.5">
+                                <input type="text" placeholder="Cargo" value="${m.role}" onchange="updateMember(${idx}, ${mIdx}, 'role', this.value)" class="input-dark !text-[11px] !p-1.5">
+                                <input type="text" placeholder="Teléfono" value="${m.phone}" onchange="updateMember(${idx}, ${mIdx}, 'phone', this.value)" class="input-dark !text-[11px] !p-1.5">
+                                <input type="text" placeholder="Correo" value="${m.email}" onchange="updateMember(${idx}, ${mIdx}, 'email', this.value)" class="input-dark !text-[11px] !p-1.5">
+                            </div>
+                        `).join('')}
+                        <button onclick="addLeader(${idx})" class="w-full py-2 bg-purple-600/10 border border-purple-600/20 rounded-lg text-[10px] text-purple-500">+ Miembro</button>
+                    </div>`;
+                }
+
                 list.innerHTML += `
-                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
-                    <div class="flex justify-between mb-2">
-                        <span class="text-[10px] font-bold text-orange-500 uppercase">${sec.type}</span>
-                        <button onclick="removeModule(${idx})" class="text-red-500 text-xs">Eliminar</button>
-                    </div>
-                    <input type="text" value="${sec.title}" onchange="updateVal(${idx}, 'title', this.value)" class="w-full bg-black/40 p-2 rounded mb-2 text-sm">
-                    ${sec.type === 'video' ? `<input type="text" placeholder="URL .mp4" value="${sec.videoUrl || ''}" onchange="updateVal(${idx}, 'videoUrl', this.value)" class="w-full bg-black/40 p-2 rounded text-xs">` : ''}
-                    ${sec.type === 'team' ? `<button onclick="addLeader(${idx})" class="w-full p-2 bg-white/5 text-xs rounded">+ Miembro</button>` : ''}
+                <div class="bg-white/5 p-5 rounded-2xl border border-white/10 relative">
+                    <button onclick="removeModule(${idx})" class="absolute top-4 right-4 text-gray-600 hover:text-red-500"><i data-lucide="trash-2" class="w-4"></i></button>
+                    <span class="text-[9px] uppercase font-black text-gray-500 block mb-3 tracking-widest">${sec.type}</span>
+                    ${fields}
                 </div>`;
             });
             lucide.createIcons();
         }
 
-        window.onload = () => {
-            lucide.createIcons();
-            AOS.init();
-        };
+        window.onload = () => { lucide.createIcons(); AOS.init({ duration: 1000, once: true }); };
     </script>
 </body>
 </html>
