@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,7 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* Fondos de Brillo estilo Velocity */
         .glow-top { 
             position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
             width: 100%; height: 600px;
@@ -35,7 +35,6 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* Tarjetas Glassmorphism Premium */
         .glass-card {
             background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
             backdrop-filter: blur(20px);
@@ -44,39 +43,23 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .glass-card:hover {
-            border-color: rgba(255, 107, 0, 0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(255, 107, 0, 0.1);
-        }
-
-        /* Botones estilo Start Now */
         .btn-premium {
             background: linear-gradient(135deg, #ff8a00 0%, #ff4d00 100%);
             padding: 12px 28px; border-radius: 99px;
             font-weight: 700; color: white;
             transition: all 0.3s ease;
             box-shadow: 0 10px 20px rgba(255, 77, 0, 0.2);
+            cursor: pointer;
         }
 
-        .btn-premium:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(255, 77, 0, 0.4);
-        }
-
-        /* Sidebar Admin */
         .admin-sidebar { 
+            position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 500px;
+            background: #0a0a0a; z-index: 100;
             transform: translateX(100%); 
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
-            z-index: 100; background: #0a0a0a;
+            transition: transform 0.5s ease-in-out;
+            border-left: 1px solid rgba(255,255,255,0.1);
         }
         .admin-sidebar.active { transform: translateX(0); }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--orange-main); }
     </style>
 </head>
 <body>
@@ -91,8 +74,8 @@
                     <i data-lucide="zap" class="w-5 h-5 text-white"></i>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-lg font-extrabold tracking-tight" id="v-logo-name">FOREVER JA</span>
-                    <span class="text-[8px] uppercase tracking-[0.3em] text-orange-500 font-bold" id="v-logo-sub">Distrito Yare</span>
+                    <span class="text-lg font-extrabold tracking-tight" id="v-logo-name">CARGANDO...</span>
+                    <span class="text-[8px] uppercase tracking-[0.3em] text-orange-500 font-bold" id="v-logo-sub">Distrito</span>
                 </div>
             </div>
             <div class="flex items-center gap-6">
@@ -104,7 +87,7 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION (ESTÁTICO PERO EDITABLE DESDE ADMIN) -->
+    <!-- HERO -->
     <header class="pt-48 pb-20 px-6 text-center relative overflow-hidden">
         <div class="max-w-4xl mx-auto" data-aos="fade-up">
             <span class="px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-500 text-xs font-bold mb-6 inline-block">
@@ -113,88 +96,61 @@
             <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-none mb-8 orange-gradient-text">
                 Uniendo Generaciones <br> Con Propósito.
             </h1>
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-                Bienvenidos al portal oficial de Jóvenes Adventistas. Aquí encontrarás recursos, directivas y toda la información para el crecimiento espiritual de nuestro distrito.
-            </p>
         </div>
     </header>
 
-    <!-- CONTENIDO DINÁMICO DE FIREBASE -->
     <main id="main-content" class="pb-32 space-y-40">
-        <!-- Renderizado vía JS -->
+        <!-- Renderizado dinámico -->
     </main>
 
     <!-- FOOTER -->
     <footer class="bg-[#030303] border-t border-white/5 py-20 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div class="col-span-1 md:col-span-1">
-                <div class="flex items-center gap-2 mb-6">
-                    <div class="w-6 h-6 bg-orange-600 rounded flex items-center justify-center">
-                        <i data-lucide="zap" class="w-4 h-4 text-white"></i>
-                    </div>
-                    <span class="font-bold tracking-tighter text-xl">FOREVER JA</span>
-                </div>
-                <p id="v-footer-text" class="text-gray-500 text-sm leading-relaxed mb-6"></p>
-                <div class="flex gap-4">
-                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-orange-600 transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-orange-600 transition"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                </div>
+            <div>
+                <span class="font-bold tracking-tighter text-xl block mb-4">FOREVER JA</span>
+                <p id="v-footer-text" class="text-gray-500 text-sm leading-relaxed"></p>
             </div>
-            
-            <div id="v-footer-video-container" class="col-span-1 md:col-span-2 glass-card rounded-2xl overflow-hidden aspect-video border border-white/10">
-                <!-- Video anclado -->
+            <div id="v-footer-video-container" class="col-span-1 md:col-span-2 glass-card rounded-2xl overflow-hidden aspect-video">
+                <!-- Video Miniatura -->
             </div>
-        </div>
-        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 text-center text-gray-600 text-xs">
-            © 2024 FOREVER JA. Hecho con fe para el Distrito Yare.
         </div>
     </footer>
 
-    <!-- PANEL ADMINISTRADOR (SIDEBAR) -->
-    <aside id="adminPanel" class="admin-sidebar fixed right-0 top-0 h-full w-full max-w-lg shadow-2xl border-l border-white/10 p-8 overflow-y-auto">
-        <div class="flex justify-between items-center mb-8 border-b border-white/5 pb-6">
-            <h2 class="text-xl font-bold text-orange-500 flex items-center gap-2"><i data-lucide="settings"></i> Configuración</h2>
-            <button onclick="toggleAdmin()" class="p-2 hover:bg-white/5 rounded-lg transition"><i data-lucide="x"></i></button>
+    <!-- PANEL ADMIN -->
+    <aside id="adminPanel" class="admin-sidebar p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-xl font-bold text-orange-500">Configuración</h2>
+            <button onclick="toggleAdmin()" class="p-2"><i data-lucide="x"></i></button>
         </div>
 
-        <div class="space-y-8">
-            <!-- IDENTIDAD -->
-            <div class="bg-white/5 p-6 rounded-2xl border border-white/5 space-y-4">
-                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Identidad Visual</label>
-                <input type="text" id="in-logo-name" placeholder="Nombre de Marca" class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-sm focus:border-orange-500 outline-none transition">
-                <input type="text" id="in-logo-sub" placeholder="Subtítulo (Distrito)" class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-sm focus:border-orange-500 outline-none transition">
-                <input type="password" id="in-admin-pass" placeholder="Nueva Contraseña Admin" class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-sm focus:border-orange-500 outline-none transition">
-            </div>
-
-            <!-- MÓDULOS -->
+        <div class="space-y-6">
             <div class="space-y-4">
-                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Secciones Activas</label>
-                <div id="admin-modules-list" class="space-y-4"></div>
-                
-                <div class="grid grid-cols-2 gap-3 pt-4">
-                    <button onclick="addNewModule('video')" class="p-4 bg-orange-600/10 text-orange-500 border border-orange-600/20 rounded-2xl text-[10px] font-bold uppercase hover:bg-orange-600 hover:text-white transition flex flex-col items-center gap-2">
-                        <i data-lucide="video" class="w-5 h-5"></i> + Video
-                    </button>
-                    <button onclick="addNewModule('download')" class="p-4 bg-blue-600/10 text-blue-500 border border-blue-600/20 rounded-2xl text-[10px] font-bold uppercase hover:bg-blue-600 hover:text-white transition flex flex-col items-center gap-2">
-                        <i data-lucide="file-text" class="w-5 h-5"></i> + Recurso
-                    </button>
-                    <button onclick="addNewModule('team')" class="p-4 bg-purple-600/10 text-purple-500 border border-purple-600/20 rounded-2xl text-[10px] font-bold uppercase hover:bg-purple-600 hover:text-white transition flex flex-col items-center gap-2 col-span-2">
-                        <i data-lucide="users" class="w-5 h-5"></i> + Equipo Directivo
-                    </button>
-                </div>
+                <input type="text" id="in-logo-name" placeholder="Nombre" class="w-full bg-white/5 p-3 rounded-lg border border-white/10">
+                <input type="text" id="in-logo-sub" placeholder="Distrito" class="w-full bg-white/5 p-3 rounded-lg border border-white/10">
+                <input type="password" id="in-admin-pass" placeholder="Nueva Clave" class="w-full bg-white/5 p-3 rounded-lg border border-white/10">
             </div>
 
-            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-5 bg-orange-600 rounded-2xl font-bold shadow-xl shadow-orange-600/30 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-sm">
-                Sincronizar con Firebase
+            <div id="admin-modules-list" class="space-y-4"></div>
+
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="addNewModule('video')" class="p-3 bg-orange-600/20 text-xs rounded-lg">+ Video</button>
+                <button onclick="addNewModule('download')" class="p-3 bg-blue-600/20 text-xs rounded-lg">+ Recurso</button>
+                <button onclick="addNewModule('team')" class="p-3 bg-purple-600/20 text-xs rounded-lg col-span-2">+ Equipo</button>
+            </div>
+
+            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-xl font-bold uppercase">
+                Guardar en Firebase
             </button>
         </div>
     </aside>
 
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CONFIGURACION (Usa la tuya)
+        // CONFIGURACIÓN DE TU PROYECTO
         const firebaseConfig = {
             apiKey: "AIzaSyCgw6tbUFKu1uHFkO6MFbmRUsvd8wXVH58",
             authDomain: "forever-ja.firebaseapp.com",
@@ -211,25 +167,23 @@
             adminPass: "JA2025",
             logoName: "FOREVER JA",
             logoSub: "Distrito Yare",
-            footer: "Liderando con amor y servicio para la gloria de Dios.",
+            footer: "Liderando con amor y servicio.",
             sections: []
         };
 
-        const formatGitHubUrl = (url) => {
-            if (!url) return "";
-            if (url.includes("github.com") && url.includes("/blob/")) {
-                return url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
-            }
-            return url;
-        };
-
+        // Escuchar cambios en tiempo real
         onSnapshot(doc(db, "forever_ja", "config"), (docSnap) => {
             if (docSnap.exists()) {
                 pageData = docSnap.data();
-                window.renderPage();
+                if (!pageData.sections) pageData.sections = [];
+                renderPage();
+            } else {
+                console.log("No hay datos, usando locales...");
+                renderPage();
             }
         });
 
+        // FUNCIONES GLOBALES (Para que funcionen con onclick)
         window.checkAdminAccess = () => {
             const pass = prompt("Clave de Seguridad:");
             if (pass === pageData.adminPass) window.toggleAdmin();
@@ -237,172 +191,47 @@
         };
 
         window.toggleAdmin = () => {
-            document.getElementById('adminPanel').classList.toggle('active');
-            if(document.getElementById('adminPanel').classList.contains('active')) loadAdminFields();
-        };
-
-        function loadAdminFields() {
-            document.getElementById('in-logo-name').value = pageData.logoName;
-            document.getElementById('in-logo-sub').value = pageData.logoSub;
-            window.renderAdminList();
-        }
-
-        // --- RENDERIZADO ESTILO VELOCITY ---
-        window.renderPage = () => {
-            document.getElementById('v-logo-name').innerText = pageData.logoName;
-            document.getElementById('v-logo-sub').innerText = pageData.logoSub;
-            document.getElementById('v-footer-text').innerText = pageData.footer;
-
-            const container = document.getElementById('main-content');
-            const footerVideo = document.getElementById('v-footer-video-container');
-            container.innerHTML = '';
-            footerVideo.innerHTML = '';
-            
-            pageData.sections.forEach((sec, index) => {
-                let html = '';
-                
-                // MÓDULO VIDEO (ANUNCIOS)
-                if(sec.type === 'video') {
-                    const cleanUrl = formatGitHubUrl(sec.videoUrl);
-                    html = `
-                    <section id="anuncios" class="max-w-6xl mx-auto px-6" data-aos="fade-up">
-                        <div class="text-center mb-16">
-                            <h2 class="text-4xl md:text-5xl font-extrabold tracking-tighter mb-4">${sec.title}</h2>
-                            <p class="text-gray-500">Mantente al tanto de las últimas actividades del distrito.</p>
-                        </div>
-                        <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video border border-white/10 group relative">
-                            <div class="absolute inset-0 bg-orange-600/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                            <video src="${cleanUrl}" controls class="w-full h-full bg-black shadow-2xl"></video>
-                        </div>
-                    </section>`;
-                    footerVideo.innerHTML = `<video src="${cleanUrl}" muted loop autoplay class="w-full h-full object-cover opacity-50"></video>`;
-                }
-
-                // MÓDULO DESCARGAS (RECURSOS)
-                else if(sec.type === 'download') {
-                    html = `
-                    <section class="max-w-6xl mx-auto px-6" data-aos="fade-right">
-                        <div class="glass-card rounded-[3rem] p-10 md:p-16 flex flex-col md:flex-row items-center gap-16 relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-64 h-64 bg-orange-600/10 rounded-full blur-[100px] -z-10"></div>
-                            <img src="${sec.image || 'https://via.placeholder.com/600x600'}" class="w-full md:w-1/2 aspect-square object-cover rounded-[2rem] shadow-2xl rotate-2 group-hover:rotate-0 transition-transform">
-                            <div class="space-y-8 flex-1">
-                                <span class="text-orange-500 font-bold text-xs uppercase tracking-widest">Recurso Destacado</span>
-                                <h2 class="text-4xl md:text-5xl font-black tracking-tighter leading-tight">${sec.title}</h2>
-                                <p class="text-gray-400 text-lg leading-relaxed">${sec.desc || 'Descarga este material preparado especialmente para el liderazgo.'}</p>
-                                <a href="${sec.link}" target="_blank" class="btn-premium inline-flex items-center gap-3">
-                                    <i data-lucide="download"></i> Obtener Recurso
-                                </a>
-                            </div>
-                        </div>
-                    </section>`;
-                }
-
-                // MÓDULO EQUIPO (DIRECTIVA)
-                else if(sec.type === 'team') {
-                    html = `
-                    <section id="equipo" class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <div class="text-center mb-20">
-                            <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4">${sec.title}</h2>
-                            <p class="text-gray-500">Los rostros detrás del servicio en el Distrito Yare.</p>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            ${sec.members.map(m => `
-                                <div class="glass-card p-8 rounded-[2rem] border border-white/5 group">
-                                    <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-600 transition-colors">
-                                        <i data-lucide="user" class="w-8 h-8 text-orange-500 group-hover:text-white"></i>
-                                    </div>
-                                    <h3 class="text-2xl font-bold mb-1 tracking-tight">${m.name}</h3>
-                                    <p class="text-orange-500 text-xs font-black uppercase tracking-widest mb-6">${m.role}</p>
-                                    <div class="pt-6 border-t border-white/5 flex justify-between items-center">
-                                        <span class="text-gray-500 text-sm flex items-center gap-2"><i data-lucide="phone" class="w-4"></i> ${m.phone || 'N/A'}</span>
-                                        <div class="flex gap-3">
-                                            <i data-lucide="message-circle" class="w-5 h-5 text-gray-700 hover:text-orange-500 cursor-pointer"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </section>`;
-                }
-                container.innerHTML += html;
-            });
-            lucide.createIcons();
-            AOS.refresh();
-        };
-
-        // --- LÓGICA DE ADMINISTRACIÓN ---
-        window.renderAdminList = () => {
-            const list = document.getElementById('admin-modules-list');
-            list.innerHTML = '';
-            pageData.sections.forEach((sec, idx) => {
-                let fields = '';
-                if(sec.type === 'video') {
-                    fields = `<input type="text" placeholder="Link Video GitHub/MP4" value="${sec.videoUrl || ''}" onchange="updateVal(${idx}, 'videoUrl', this.value)" class="w-full bg-black/50 p-3 rounded-xl text-xs border border-white/10 mt-2">`;
-                }
-                if(sec.type === 'download') {
-                    fields = `
-                    <input type="text" placeholder="Link descarga" value="${sec.link || ''}" onchange="updateVal(${idx}, 'link', this.value)" class="w-full bg-black/50 p-3 rounded-xl text-xs border border-white/10 mt-2 mb-2">
-                    <textarea placeholder="Breve descripción" onchange="updateVal(${idx}, 'desc', this.value)" class="w-full bg-black/50 p-3 rounded-xl text-xs border border-white/10">${sec.desc || ''}</textarea>
-                    <input type="file" onchange="handleFile(this, ${idx})" class="text-[10px] mt-2 block w-full text-gray-500">`;
-                }
-                if(sec.type === 'team') {
-                    fields = `<button onclick="addLeader(${idx})" class="text-[10px] bg-white/5 p-3 rounded-xl w-full mt-2 border border-dashed border-white/20 hover:border-orange-500 transition">+ Añadir Integrante</button>`;
-                }
-
-                list.innerHTML += `
-                <div class="bg-white/5 border border-white/10 p-5 rounded-3xl relative group">
-                    <button onclick="removeModule(${idx})" class="absolute top-4 right-4 text-gray-600 hover:text-red-500 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    <div class="flex items-center gap-2 mb-3">
-                         <span class="w-2 h-2 rounded-full bg-orange-500"></span>
-                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">${sec.type}</span>
-                    </div>
-                    <input type="text" value="${sec.title || ''}" onchange="updateVal(${idx}, 'title', this.value)" placeholder="Título" class="w-full bg-transparent font-bold text-sm outline-none focus:text-orange-500">
-                    ${fields}
-                </div>`;
-            });
-            lucide.createIcons();
-        };
-
-        window.updateVal = (idx, field, val) => pageData.sections[idx][field] = val;
-
-        window.handleFile = (input, idx) => {
-            const reader = new FileReader();
-            reader.onload = e => {
-                pageData.sections[idx].image = e.target.result;
-                alert("Imagen preparada.");
-            };
-            reader.readAsDataURL(input.files[0]);
+            const panel = document.getElementById('adminPanel');
+            panel.classList.toggle('active');
+            if(panel.classList.contains('active')) {
+                document.getElementById('in-logo-name').value = pageData.logoName;
+                document.getElementById('in-logo-sub').value = pageData.logoSub;
+                renderAdminList();
+            }
         };
 
         window.addNewModule = (type) => {
             const mod = { type, title: "Nueva Sección" };
-            if(type === 'download') { mod.link = "#"; mod.desc = ""; mod.image = ""; }
+            if(type === 'download') { mod.link = "#"; mod.desc = ""; }
             if(type === 'video') { mod.videoUrl = ""; }
             if(type === 'team') { mod.members = []; }
             pageData.sections.push(mod);
-            window.renderAdminList();
+            renderAdminList();
+        };
+
+        window.updateVal = (idx, field, val) => {
+            pageData.sections[idx][field] = val;
+        };
+
+        window.removeModule = (idx) => {
+            if(confirm("¿Eliminar?")) {
+                pageData.sections.splice(idx, 1);
+                renderAdminList();
+            }
         };
 
         window.addLeader = (idx) => {
             const n = prompt("Nombre:");
             const c = prompt("Cargo:");
-            const t = prompt("WhatsApp:");
             if(n) {
-                pageData.sections[idx].members.push({name: n, role: c, phone: t});
-                window.renderAdminList();
-            }
-        };
-
-        window.removeModule = (idx) => {
-            if(confirm("¿Eliminar sección?")) {
-                pageData.sections.splice(idx, 1);
-                window.renderAdminList();
+                pageData.sections[idx].members.push({name: n, role: c, phone: ""});
+                renderAdminList();
             }
         };
 
         window.saveAllChanges = async () => {
             const btn = document.getElementById('saveBtn');
-            btn.innerText = "SUBIENDO A LA NUBE...";
+            btn.innerText = "GUARDANDO...";
             btn.disabled = true;
 
             pageData.logoName = document.getElementById('in-logo-name').value;
@@ -412,19 +241,89 @@
 
             try {
                 await setDoc(doc(db, "forever_ja", "config"), pageData);
-                alert("¡Base de datos actualizada!");
+                alert("¡Actualizado!");
                 window.toggleAdmin();
             } catch (e) {
-                alert("Error al conectar con Firebase.");
+                console.error(e);
+                alert("Error al guardar. Revisa las reglas de Firestore.");
             } finally {
-                btn.innerText = "Sincronizar con Firebase";
+                btn.innerText = "Guardar en Firebase";
                 btn.disabled = false;
             }
         };
 
+        // RENDERIZADO DE LA WEB
+        function renderPage() {
+            document.getElementById('v-logo-name').innerText = pageData.logoName;
+            document.getElementById('v-logo-sub').innerText = pageData.logoSub;
+            document.getElementById('v-footer-text').innerText = pageData.footer;
+
+            const container = document.getElementById('main-content');
+            container.innerHTML = '';
+
+            pageData.sections.forEach((sec, idx) => {
+                let sectionHtml = '';
+                if(sec.type === 'video') {
+                    sectionHtml = `
+                    <section id="anuncios" class="max-w-6xl mx-auto px-6" data-aos="fade-up">
+                        <h2 class="text-4xl font-bold text-center mb-10">${sec.title}</h2>
+                        <div class="glass-card rounded-[2rem] overflow-hidden aspect-video">
+                            <video src="${sec.videoUrl}" controls class="w-full h-full bg-black"></video>
+                        </div>
+                    </section>`;
+                } else if(sec.type === 'download') {
+                    sectionHtml = `
+                    <section class="max-w-5xl mx-auto px-6" data-aos="fade-right">
+                        <div class="glass-card p-10 rounded-[2rem] flex flex-col md:flex-row gap-10 items-center">
+                            <div class="flex-1">
+                                <h2 class="text-3xl font-bold mb-4">${sec.title}</h2>
+                                <p class="text-gray-400 mb-6">${sec.desc || ''}</p>
+                                <a href="${sec.link}" target="_blank" class="btn-premium inline-block">Descargar Recurso</a>
+                            </div>
+                        </div>
+                    </section>`;
+                } else if(sec.type === 'team') {
+                    sectionHtml = `
+                    <section class="max-w-7xl mx-auto px-6" data-aos="fade-up">
+                        <h2 class="text-4xl font-bold text-center mb-12">${sec.title}</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            ${sec.members.map(m => `
+                                <div class="glass-card p-6 rounded-2xl text-center">
+                                    <h3 class="text-xl font-bold">${m.name}</h3>
+                                    <p class="text-orange-500 text-sm uppercase">${m.role}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>`;
+                }
+                container.innerHTML += sectionHtml;
+            });
+            lucide.createIcons();
+            AOS.init();
+        }
+
+        // RENDERIZADO LISTA ADMIN
+        function renderAdminList() {
+            const list = document.getElementById('admin-modules-list');
+            list.innerHTML = '';
+            pageData.sections.forEach((sec, idx) => {
+                list.innerHTML += `
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-[10px] font-bold text-orange-500 uppercase">${sec.type}</span>
+                        <button onclick="removeModule(${idx})" class="text-red-500 text-xs">Eliminar</button>
+                    </div>
+                    <input type="text" value="${sec.title}" onchange="updateVal(${idx}, 'title', this.value)" class="w-full bg-black/40 p-2 rounded mb-2 text-sm">
+                    ${sec.type === 'video' ? `<input type="text" placeholder="URL .mp4" value="${sec.videoUrl || ''}" onchange="updateVal(${idx}, 'videoUrl', this.value)" class="w-full bg-black/40 p-2 rounded text-xs">` : ''}
+                    ${sec.type === 'team' ? `<button onclick="addLeader(${idx})" class="w-full p-2 bg-white/5 text-xs rounded">+ Miembro</button>` : ''}
+                </div>`;
+            });
+            lucide.createIcons();
+        }
+
         window.onload = () => {
             lucide.createIcons();
-            AOS.init({ duration: 1000, once: true });
+            AOS.init();
         };
     </script>
 </body>
