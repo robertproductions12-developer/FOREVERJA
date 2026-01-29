@@ -98,9 +98,9 @@
 </head>
 <body>
 
-    <!-- PANTALLA DE SALIDA -->
+    <!-- PANTALLA DE SALIDA: COLOCA AQUÍ TU IMAGEN DE GITHUB VERTICAL -->
     <div id="exitScreen" onclick="this.style.display='none'">
-        <img id="v-exit-img" src="" class="w-full h-full object-cover">
+        <img src="AQUI_TU_LINK_IMAGEN_SALIDA_GITHUB.jpg" class="w-full h-full object-cover">
     </div>
 
     <!-- HUMO -->
@@ -112,13 +112,11 @@
     <!-- NAVBAR -->
     <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/80 backdrop-blur-2xl">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <!-- LOGO / ICONO -->
+            
+            <!-- LOGO / ICONO: COLOCA AQUÍ TU LOGO DE GITHUB -->
             <div class="flex items-center gap-3">
-                <div id="logo-container" class="w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl">
-                    <img id="v-main-logo" src="" class="w-full h-full object-contain hidden">
-                    <div id="v-default-logo" class="w-full h-full bg-orange-600 flex items-center justify-center">
-                        <i data-lucide="crown" class="text-white"></i>
-                    </div>
+                <div class="w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl bg-black">
+                    <img src="AQUI_TU_LINK_LOGO_GITHUB.png" class="w-full h-full object-contain">
                 </div>
                 <div class="hidden sm:flex flex-col">
                     <span class="text-lg font-extrabold tracking-tighter" id="v-logo-name">CARGANDO...</span>
@@ -172,15 +170,15 @@
         </div>
     </header>
 
-    <!-- VIDEO PRINCIPAL -->
+    <!-- VIDEO PRINCIPAL: COLOCA AQUÍ TU VIDEO DE GITHUB -->
     <section id="video-sec" class="max-w-6xl mx-auto px-6 mb-20">
         <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video border border-white/10 shadow-2xl">
-            <video id="v-main-video" src="" controls class="w-full h-full bg-black"></video>
+            <video src="123.mp4" controls class="w-full h-full bg-black"></video>
         </div>
     </section>
 
-    <!-- CONTENIDO DINÁMICO -->
-    <main id="main-content" class="pb-32 space-y-20 md:space-y-40">
+    <!-- CONTENIDO DINÁMICO (RESPONSIVE) -->
+    <main id="main-content" class="pb-32 space-y-10 md:space-y-40">
         <!-- Render dinámico -->
     </main>
 
@@ -193,12 +191,7 @@
 
         <div class="space-y-6">
             <div class="space-y-4">
-                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Multimedia y Links</label>
-                <input type="text" id="in-logo-url" placeholder="URL de Icono/Logo (GitHub)" class="input-dark">
-                <input type="text" id="in-video-url" placeholder="URL Video Principal (.mp4)" class="input-dark">
-                <input type="text" id="in-exit-url" placeholder="URL Imagen Salida (Vertical)" class="input-dark">
-                
-                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pt-4 block">Textos</label>
+                <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block">Textos de la Web</label>
                 <input type="text" id="in-logo-name" placeholder="Nombre de la Web" class="input-dark">
                 <input type="text" id="in-logo-sub" placeholder="Subtítulo del Distrito" class="input-dark">
             </div>
@@ -237,17 +230,7 @@
             adminPass: "JA2025",
             logoName: "FOREVER JA",
             logoSub: "Distrito Yare",
-            mainVideo: "", logoUrl: "", exitUrl: "",
             sections: []
-        };
-
-        // Función para formatear links de GitHub a Raw (Directo)
-        const formatGitHubUrl = (url) => {
-            if (!url) return "";
-            if (url.includes("github.com") && url.includes("/blob/")) {
-                return url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
-            }
-            return url;
         };
 
         onSnapshot(doc(db, "forever_ja", "config"), (docSnap) => {
@@ -270,9 +253,7 @@
         };
 
         window.showExit = () => {
-            const screen = document.getElementById('exitScreen');
-            document.getElementById('v-exit-img').src = formatGitHubUrl(pageData.exitUrl) || "https://via.placeholder.com/1080x1920";
-            screen.style.display = 'block';
+            document.getElementById('exitScreen').style.display = 'block';
         };
 
         window.checkAdminAccess = () => {
@@ -311,9 +292,6 @@
             btn.innerText = "Guardando...";
             pageData.logoName = document.getElementById('in-logo-name').value;
             pageData.logoSub = document.getElementById('in-logo-sub').value;
-            pageData.logoUrl = document.getElementById('in-logo-url').value;
-            pageData.exitUrl = document.getElementById('in-exit-url').value;
-            pageData.mainVideo = document.getElementById('in-video-url').value;
             
             await setDoc(doc(db, "forever_ja", "config"), pageData);
             alert("Sincronización Exitosa");
@@ -322,29 +300,11 @@
         };
 
         function renderPage() {
-            // Textos Globales
             document.getElementById('v-logo-name').innerText = pageData.logoName;
             document.getElementById('v-logo-sub').innerText = pageData.logoSub;
             document.getElementById('v-display-title').innerText = pageData.logoName;
             document.getElementById('v-display-sub').innerText = pageData.logoSub;
             
-            // Video Principal (Con formato corregido)
-            const videoEl = document.getElementById('v-main-video');
-            const newVideoSrc = formatGitHubUrl(pageData.mainVideo);
-            if (videoEl.src !== newVideoSrc) videoEl.src = newVideoSrc;
-            
-            // Logo / Icono logic
-            const logoImg = document.getElementById('v-main-logo');
-            const defLogo = document.getElementById('v-default-logo');
-            if(pageData.logoUrl) {
-                logoImg.src = formatGitHubUrl(pageData.logoUrl);
-                logoImg.classList.remove('hidden');
-                defLogo.classList.add('hidden');
-            } else {
-                logoImg.classList.add('hidden');
-                defLogo.classList.remove('hidden');
-            }
-
             const container = document.getElementById('main-content');
             container.innerHTML = '';
 
@@ -354,8 +314,8 @@
                 let html = '';
                 if(sec.type === 'team') {
                     html = `
-                    <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <h2 class="text-4xl font-black mb-12 tracking-tighter text-center md:text-left">${sec.title}</h2>
+                    <div class="max-w-7xl mx-auto px-4 md:px-6" data-aos="fade-up">
+                        <h2 class="text-3xl md:text-4xl font-black mb-8 tracking-tighter text-center md:text-left">${sec.title}</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             ${sec.members.map(m => `
                                 <div class="glass-card p-8 rounded-3xl border border-white/5 text-center">
@@ -366,16 +326,17 @@
                         </div>
                     </div>`;
                 } else if(sec.type === 'download' || sec.type === 'info') {
+                    // ADAPTADO PARA MÓVILES: flex-col para celulares (una debajo de la otra), md:flex-row para PC (al lado)
                     html = `
-                    <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <div class="glass-card rounded-[3rem] overflow-hidden flex flex-col md:flex-row items-center border border-white/5">
+                    <div class="max-w-7xl mx-auto px-4 md:px-6" data-aos="fade-up">
+                        <div class="glass-card rounded-3xl md:rounded-[3rem] overflow-hidden flex flex-col md:flex-row items-center border border-white/5">
                             <div class="w-full md:w-1/2 aspect-video overflow-hidden">
                                 <img src="${sec.image || 'https://via.placeholder.com/1920x1080'}" class="w-full h-full object-cover hover:scale-105 transition-all duration-700">
                             </div>
-                            <div class="p-8 md:p-16 space-y-6 flex-1">
-                                <h2 class="text-3xl md:text-4xl font-black tracking-tighter">${sec.title}</h2>
+                            <div class="w-full md:w-1/2 p-6 md:p-16 space-y-4 md:space-y-6">
+                                <h2 class="text-2xl md:text-4xl font-black tracking-tighter">${sec.title}</h2>
                                 <p class="text-gray-400 leading-relaxed text-sm md:text-base">${sec.desc}</p>
-                                ${sec.type === 'download' ? `<a href="${sec.link}" target="_blank" class="btn-premium"><i data-lucide="download"></i> Descargar</a>` : ''}
+                                ${sec.type === 'download' ? `<a href="${sec.link}" target="_blank" class="btn-premium w-full md:w-auto justify-center"><i data-lucide="download"></i> Descargar</a>` : ''}
                             </div>
                         </div>
                     </div>`;
@@ -389,9 +350,6 @@
         function renderAdminList() {
             const list = document.getElementById('admin-modules-list');
             list.innerHTML = '';
-            document.getElementById('in-logo-url').value = pageData.logoUrl || "";
-            document.getElementById('in-exit-url').value = pageData.exitUrl || "";
-            document.getElementById('in-video-url').value = pageData.mainVideo || "";
             document.getElementById('in-logo-name').value = pageData.logoName || "";
             document.getElementById('in-logo-sub').value = pageData.logoSub || "";
 
