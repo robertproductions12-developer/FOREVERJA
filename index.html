@@ -11,111 +11,42 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        :root { 
-            --orange-main: #ff6b00;
-            --orange-glow: rgba(255, 107, 0, 0.3); 
-        }
-        
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #050505; color: white; scroll-behavior: smooth;
-            overflow-x: hidden; position: relative;
-        }
-
-        /* --- EFECTO HUMO --- */
-        .smoke-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none; opacity: 0.4; filter: blur(60px);
-        }
-        .smoke-particle {
-            position: absolute; border-radius: 50%;
-            background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
-            animation: moveSmoke 20s infinite linear alternate;
-        }
-        @keyframes moveSmoke {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
-            50% { transform: translate(20%, 30%) scale(1.5); opacity: 0.6; }
-            100% { transform: translate(-10%, 10%) scale(1.2); opacity: 0.4; }
-        }
-
-        .orange-gradient-text {
-            background: linear-gradient(135deg, #fff 30%, #ff8a00 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .glass-card {
-            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-premium {
-            background: linear-gradient(135deg, #ff8a00 0%, #ff4d00 100%);
-            padding: 10px 20px; border-radius: 99px;
-            font-weight: 700; color: white; transition: all 0.3s ease;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-        }
-
-        .admin-sidebar { 
-            position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 550px;
-            background: #0a0a0a; z-index: 1000;
-            transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            border-left: 1px solid rgba(255,255,255,0.1);
-        }
+        :root { --orange-main: #ff6b00; --orange-glow: rgba(255, 107, 0, 0.3); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050505; color: white; scroll-behavior: smooth; overflow-x: hidden; }
+        .smoke-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; filter: blur(60px); }
+        .smoke-particle { position: absolute; border-radius: 50%; background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%); animation: moveSmoke 20s infinite linear alternate; }
+        @keyframes moveSmoke { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(20%, 30%) scale(1.5); } 100% { transform: translate(-10%, 10%) scale(1.2); } }
+        .orange-gradient-text { background: linear-gradient(135deg, #fff 30%, #ff8a00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass-card { background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .btn-premium { background: linear-gradient(135deg, #ff8a00 0%, #ff4d00 100%); padding: 10px 20px; border-radius: 99px; font-weight: 700; color: white; transition: all 0.3s ease; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .admin-sidebar { position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 500px; background: #0a0a0a; z-index: 1000; transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); border-left: 1px solid rgba(255,255,255,0.1); }
         .admin-sidebar.active { transform: translateX(0); }
-
-        .input-dark {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px; border-radius: 12px; font-size: 13px; color: white; outline: none;
-        }
-
-        /* Pantalla de Salida */
-        #exitScreen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 9999; display: none;
-        }
-
-        /* Pantalla de Login Admin */
-        #adminAuthScreen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); backdrop-blur-xl; z-index: 2000;
-            display: none; align-items: center; justify-content: center; p: 6;
-        }
-
-        .nav-link {
-            cursor: pointer; font-size: 0.85rem; font-weight: 600;
-            color: #999; transition: all 0.3s;
-        }
+        .input-dark { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; font-size: 13px; color: white; outline: none; }
+        #adminAuthScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .nav-link { cursor: pointer; font-size: 0.85rem; font-weight: 600; color: #999; transition: all 0.3s; padding-bottom: 4px; border-bottom: 2px solid transparent; }
         .nav-link.active { color: white; border-bottom: 2px solid var(--orange-main); }
-
-        #mobile-menu {
-            transition: all 0.4s ease-in-out;
-            transform: translateY(-100%); opacity: 0; pointer-events: none;
-        }
-        #mobile-menu.active { transform: translateY(0); opacity: 1; pointer-events: all; }
+        #exitScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9999; display: none; }
     </style>
 </head>
 <body>
 
-    <!-- PANTALLA DE LOGIN ADMIN (ESTILO PREMIUM) -->
+    <!-- LOGIN ADMIN -->
     <div id="adminAuthScreen">
-        <div class="glass-card p-10 rounded-[2.5rem] w-full max-w-md text-center border border-white/10">
+        <div class="glass-card p-10 rounded-[2.5rem] w-full max-w-md text-center">
             <h2 class="text-3xl font-bold orange-gradient-text mb-6">Acceso Admin</h2>
-            <input type="password" id="adminPasswordInput" placeholder="Introduce la clave..." class="input-dark mb-6 text-center text-xl tracking-widest">
+            <input type="password" id="adminPasswordInput" placeholder="Clave de acceso" class="input-dark mb-6 text-center text-xl">
             <div class="flex gap-4">
-                <button onclick="closeAdminAuth()" class="flex-1 p-4 bg-white/5 rounded-xl font-bold hover:bg-white/10 transition">Cancelar</button>
-                <button onclick="tryAdminAccess()" class="flex-1 p-4 bg-orange-600 rounded-xl font-bold hover:scale-105 transition">Entrar</button>
+                <button onclick="window.closeAdminAuth()" class="flex-1 p-4 bg-white/5 rounded-xl">Cancelar</button>
+                <button onclick="window.tryAdminAccess()" class="flex-1 p-4 bg-orange-600 rounded-xl font-bold">Entrar</button>
             </div>
         </div>
     </div>
 
-    <!-- PANTALLA DE SALIDA -->
+    <!-- PANTALLA SALIDA -->
     <div id="exitScreen" onclick="this.style.display='none'">
-        <img id="v-exit-img" src="juego.png" class="w-full h-full object-cover">
+        <img src="juego.png" class="w-full h-full object-cover">
     </div>
 
-    <!-- HUMO -->
     <div class="smoke-container">
         <div class="smoke-particle" style="width: 800px; height: 800px; top: -10%; left: -10%;"></div>
         <div class="smoke-particle" style="width: 600px; height: 600px; bottom: 10%; right: -5%;"></div>
@@ -124,90 +55,63 @@
     <!-- NAVBAR -->
     <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/80 backdrop-blur-2xl">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl bg-black border border-white/5">
-                    <!-- LOGO PRINCIPAL -->
-                    <img id="v-main-logo" src="icono.png" class="w-full h-full object-contain">
+                <div class="w-12 h-12 rounded-xl bg-black border border-white/5 flex items-center justify-center overflow-hidden">
+                    <img src="icono.png" class="w-full h-full object-contain">
                 </div>
-                <div class="hidden sm:flex flex-col">
-                    <span class="text-lg font-extrabold tracking-tighter" id="v-logo-name">FOREVER JA</span>
-                    <span class="text-[8px] uppercase tracking-[0.3em] text-orange-500 font-bold" id="v-logo-sub">Distrito Yare</span>
+                <div class="flex flex-col">
+                    <span class="text-lg font-extrabold tracking-tighter">FOREVER JA</span>
+                    <span class="text-[8px] uppercase tracking-[0.3em] text-orange-500 font-bold">Distrito Yare</span>
                 </div>
             </div>
 
-            <!-- MENU DESKTOP -->
             <div class="hidden md:flex gap-8 items-center">
-                <span onclick="setFilter('about')" class="nav-link" id="nav-about">Sobre Nosotros</span>
-                <span onclick="setFilter('resources')" class="nav-link" id="nav-resources">Recursos</span>
-                <span onclick="setFilter('info')" class="nav-link" id="nav-info">Información</span>
-                
-                <div class="flex items-center gap-4 ml-4">
-                    <button onclick="openAdminAuth()" class="text-gray-400 hover:text-white transition">
-                        <i data-lucide="lock" class="w-5 h-5"></i>
-                    </button>
-                    <button onclick="showExit()" class="p-2 bg-red-600/20 text-red-500 rounded-lg hover:bg-red-600 transition">
-                        <i data-lucide="log-out" class="w-5 h-5"></i>
-                    </button>
-                </div>
+                <span onclick="window.setFilter('about')" class="nav-link" id="nav-about">Sobre Nosotros</span>
+                <span onclick="window.setFilter('resources')" class="nav-link" id="nav-resources">Recursos</span>
+                <span onclick="window.setFilter('info')" class="nav-link" id="nav-info">Información</span>
+                <button onclick="window.openAdminAuth()" class="text-gray-400 hover:text-white ml-4"><i data-lucide="lock" class="w-5 h-5"></i></button>
+                <button onclick="window.showExit()" class="p-2 bg-red-600/20 text-red-500 rounded-lg"><i data-lucide="log-out" class="w-5 h-5"></i></button>
             </div>
-
-            <!-- BOTON MOVIL -->
-            <div class="md:hidden flex items-center gap-4">
-                <button onclick="openAdminAuth()" class="text-gray-400"><i data-lucide="lock" class="w-5 h-5"></i></button>
-                <button onclick="toggleMobileMenu()" class="text-white"><i data-lucide="menu"></i></button>
-            </div>
-        </div>
-
-        <div id="mobile-menu" class="absolute top-20 left-0 w-full bg-black/95 border-b border-white/10 flex flex-col p-6 gap-6 md:hidden">
-            <span onclick="setFilter('about'); toggleMobileMenu()" class="nav-link text-lg text-center" id="m-nav-about">Sobre Nosotros</span>
-            <span onclick="setFilter('resources'); toggleMobileMenu()" class="nav-link text-lg text-center" id="m-nav-resources">Recursos</span>
-            <span onclick="setFilter('info'); toggleMobileMenu()" class="nav-link text-lg text-center" id="m-nav-info">Información</span>
-            <button onclick="showExit()" class="btn-premium justify-center w-full bg-red-600/20 text-red-500"><i data-lucide="log-out"></i> Salir</button>
         </div>
     </nav>
 
     <!-- HERO -->
     <header class="pt-40 pb-10 px-6 text-center">
         <div class="max-w-4xl mx-auto" data-aos="fade-up">
-            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tighter leading-none mb-4 orange-gradient-text" id="v-display-title">FOREVER JA</h1>
-            <p class="text-gray-500 uppercase tracking-[0.4em] text-xs font-bold" id="v-display-sub">Distrito Yare</p>
+            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tighter orange-gradient-text mb-2">FOREVER JA</h1>
+            <p class="text-gray-500 uppercase tracking-[0.4em] text-xs font-bold">Distrito Yare</p>
         </div>
     </header>
 
-    <!-- VIDEO PRINCIPAL -->
     <section class="max-w-6xl mx-auto px-6 mb-20">
-        <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video border border-white/10 shadow-2xl">
-            <!-- COLOCA AQUÍ TU LINK DE GITHUB MP4 -->
+        <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video shadow-2xl">
             <video id="v-main-video" src="123.mp4" controls class="w-full h-full bg-black"></video>
         </div>
     </section>
 
-    <main id="main-content" class="pb-32 space-y-12 md:space-y-40">
-        <!-- Contenido dinámico -->
-    </main>
+    <!-- CONTENIDO DINÁMICO -->
+    <main id="main-content" class="pb-32 space-y-20"></main>
 
-    <!-- PANEL ADMIN SIDEBAR -->
+    <!-- ADMIN PANEL -->
     <aside id="adminPanel" class="admin-sidebar p-8 overflow-y-auto">
         <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
             <h2 class="text-xl font-bold text-orange-500">Gestor de Contenido</h2>
-            <button onclick="toggleAdmin()"><i data-lucide="x"></i></button>
+            <button onclick="window.toggleAdmin()"><i data-lucide="x"></i></button>
         </div>
 
-        <div class="space-y-6">
-            <div id="admin-modules-list" class="space-y-6"></div>
-
-            <div class="grid grid-cols-3 gap-2 pt-6 border-t border-white/10">
-                <button onclick="addNewModule('team')" class="p-3 bg-purple-600/20 text-[10px] font-bold rounded-xl border border-purple-600/20 hover:bg-purple-600 transition">+ NOSOTROS</button>
-                <button onclick="addNewModule('download')" class="p-3 bg-blue-600/20 text-[10px] font-bold rounded-xl border border-blue-600/20 hover:bg-blue-600 transition">+ RECURSOS</button>
-                <button onclick="addNewModule('info')" class="p-3 bg-orange-600/20 text-[10px] font-bold rounded-xl border border-orange-600/20 hover:bg-orange-600 transition">+ INFO</button>
-            </div>
-
-            <button onclick="saveAllChanges()" id="saveBtn" class="w-full py-5 bg-orange-600 rounded-2xl font-bold uppercase tracking-widest shadow-xl hover:scale-[1.02] transition-all">Sincronizar Cambios</button>
+        <div id="admin-modules-list" class="space-y-6 mb-8">
+            <!-- Los módulos se cargan aquí -->
         </div>
+
+        <div class="grid grid-cols-3 gap-2 mb-6">
+            <button onclick="window.addNewModule('team')" class="p-2 bg-purple-600/20 text-[10px] rounded-lg border border-purple-600/40">+ NOSOTROS</button>
+            <button onclick="window.addNewModule('download')" class="p-2 bg-blue-600/20 text-[10px] rounded-lg border border-blue-600/40">+ RECURSO</button>
+            <button onclick="window.addNewModule('info')" class="p-2 bg-orange-600/20 text-[10px] rounded-lg border border-orange-600/40">+ INFO</button>
+        </div>
+
+        <button onclick="window.saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-xl font-bold uppercase tracking-widest hover:bg-orange-500 transition">Sincronizar Cambios</button>
     </aside>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -224,87 +128,115 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let activeFilter = 'resources';
-        let pageData = { adminPass: "JA2025", sections: [] };
+        // ESTADO GLOBAL
+        window.activeFilter = 'resources';
+        window.pageData = { adminPass: "JA2025", sections: [] };
 
-        // Formateador automático para GitHub
-        const fixUrl = (u) => (u && u.includes("github.com") && u.includes("/blob/")) ? u.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/") : u;
-
+        // Sincronización en tiempo real desde Firebase
         onSnapshot(doc(db, "forever_ja", "config"), (docSnap) => {
             if (docSnap.exists()) {
-                pageData = docSnap.data();
-                renderPage();
+                window.pageData = docSnap.data();
+                if (!window.pageData.sections) window.pageData.sections = [];
+                window.renderPage();
             }
         });
 
-        // FUNCIONES DE LOGIN
+        // FUNCIONES DE NAVEGACIÓN
+        window.setFilter = (f) => {
+            window.activeFilter = f;
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            const activeNav = document.getElementById('nav-' + f);
+            if (activeNav) activeNav.classList.add('active');
+            window.renderPage();
+        };
+
+        window.showExit = () => { document.getElementById('exitScreen').style.display = 'block'; };
+
+        // FUNCIONES DE ADMIN AUTH
         window.openAdminAuth = () => { document.getElementById('adminAuthScreen').style.display = 'flex'; };
         window.closeAdminAuth = () => { document.getElementById('adminAuthScreen').style.display = 'none'; };
         window.tryAdminAccess = () => {
             const pass = document.getElementById('adminPasswordInput').value;
-            if(pass === pageData.adminPass || pass === "JA2025") {
-                closeAdminAuth();
-                toggleAdmin();
+            if (pass === window.pageData.adminPass || pass === "JA2025") {
+                window.closeAdminAuth();
+                window.toggleAdmin();
             } else {
                 alert("Clave incorrecta");
             }
         };
 
-        window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('active');
-        
-        window.setFilter = (f) => {
-            activeFilter = f;
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-' + f)?.classList.add('active');
-            renderPage();
-        };
-
-        window.showExit = () => document.getElementById('exitScreen').style.display = 'block';
-
+        // GESTIÓN DE PANEL
         window.toggleAdmin = () => {
             const panel = document.getElementById('adminPanel');
             panel.classList.toggle('active');
-            if(panel.classList.contains('active')) renderAdminList();
+            if (panel.classList.contains('active')) window.renderAdminList();
         };
 
+        // AÑADIR SECCIONES
         window.addNewModule = (type) => {
             const cat = type === 'team' ? 'about' : (type === 'download' ? 'resources' : 'info');
-            pageData.sections.push({ type, category: cat, title: "", desc: "", link: "#", image: "", members: [] });
-            renderAdminList();
+            window.pageData.sections.push({
+                id: Date.now(),
+                type: type,
+                category: cat,
+                title: "Nuevo Título",
+                desc: "Descripción aquí...",
+                link: "",
+                image: "",
+                members: type === 'team' ? [{name: "Nombre", role: "Cargo"}] : []
+            });
+            window.renderAdminList();
         };
 
-        window.handleFile = (e, idx) => {
+        window.deleteModule = (index) => {
+            window.pageData.sections.splice(index, 1);
+            window.renderAdminList();
+        };
+
+        // MANEJO DE IMÁGENES
+        window.handleFile = (e, index) => {
+            const file = e.target.files[0];
+            if (!file) return;
             const reader = new FileReader();
-            reader.onload = () => { pageData.sections[idx].image = reader.result; renderAdminList(); };
-            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = () => {
+                window.pageData.sections[index].image = reader.result;
+                window.renderAdminList();
+            };
+            reader.readAsDataURL(file);
         };
 
+        // GUARDAR EN FIREBASE
         window.saveAllChanges = async () => {
             const btn = document.getElementById('saveBtn');
-            btn.innerText = "Sincronizando...";
-            await setDoc(doc(db, "forever_ja", "config"), pageData);
+            btn.innerText = "Guardando...";
+            try {
+                await setDoc(doc(db, "forever_ja", "config"), window.pageData);
+                alert("¡Cambios guardados correctamente!");
+                window.toggleAdmin();
+            } catch (error) {
+                console.error(error);
+                alert("Error al guardar");
+            }
             btn.innerText = "Sincronizar Cambios";
-            alert("Base de Datos Actualizada");
-            toggleAdmin();
         };
 
-        function renderPage() {
+        // RENDERIZADO DE LA PÁGINA PÚBLICA
+        window.renderPage = () => {
             const container = document.getElementById('main-content');
             container.innerHTML = '';
             
-            // Fix de Multimedia Principal
-            document.getElementById('v-main-logo').src = fixUrl(document.getElementById('v-main-logo').src);
-            document.getElementById('v-exit-img').src = fixUrl(document.getElementById('v-exit-img').src);
-            document.getElementById('v-main-video').src = fixUrl(document.getElementById('v-main-video').src);
+            const filtered = window.pageData.sections.filter(s => s.category === window.activeFilter);
 
-            const filtered = pageData.sections.filter(s => s.category === activeFilter);
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center text-gray-600 py-20">No hay contenido en esta sección todavía.</div>`;
+            }
 
             filtered.forEach(sec => {
                 let html = '';
                 if(sec.type === 'team') {
                     html = `
-                    <div class="max-w-7xl mx-auto px-4 md:px-6" data-aos="fade-up">
-                        <h2 class="text-3xl md:text-5xl font-black mb-10 tracking-tighter">${sec.title}</h2>
+                    <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
+                        <h2 class="text-3xl md:text-5xl font-black mb-10 tracking-tighter text-center">${sec.title}</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             ${sec.members.map(m => `
                                 <div class="glass-card p-8 rounded-3xl border border-white/5 text-center">
@@ -316,15 +248,18 @@
                     </div>`;
                 } else {
                     html = `
-                    <div class="max-w-7xl mx-auto px-4 md:px-6" data-aos="fade-up">
-                        <div class="glass-card rounded-[2rem] md:rounded-[3rem] overflow-hidden flex flex-col md:flex-row items-center border border-white/5">
-                            <div class="w-full md:w-1/2 aspect-video overflow-hidden">
-                                <img src="${sec.image || 'https://via.placeholder.com/1920x1080'}" class="w-full h-full object-cover">
+                    <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
+                        <div class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row items-center border border-white/5">
+                            <div class="w-full md:w-1/2 aspect-video bg-white/5">
+                                <img src="${sec.image || 'https://via.placeholder.com/800x450?text=Sin+Imagen'}" class="w-full h-full object-cover">
                             </div>
-                            <div class="w-full md:w-1/2 p-6 md:p-16 space-y-4 md:space-y-6">
+                            <div class="w-full md:w-1/2 p-10 md:p-16 space-y-6">
                                 <h2 class="text-2xl md:text-4xl font-black tracking-tighter">${sec.title}</h2>
-                                <p class="text-gray-400 leading-relaxed text-sm md:text-base whitespace-pre-wrap">${sec.desc}</p>
-                                ${sec.type === 'download' ? `<a href="${sec.link}" target="_blank" class="btn-premium w-full md:w-auto justify-center"><i data-lucide="download"></i> Descargar</a>` : ''}
+                                <p class="text-gray-400 leading-relaxed whitespace-pre-wrap">${sec.desc}</p>
+                                ${sec.type === 'download' ? 
+                                    `<a href="${sec.link}" target="_blank" download class="btn-premium">
+                                        <i data-lucide="download"></i> Descargar Recurso
+                                    </a>` : ''}
                             </div>
                         </div>
                     </div>`;
@@ -333,47 +268,60 @@
             });
             lucide.createIcons();
             AOS.init();
-        }
+        };
 
-        function renderAdminList() {
+        // RENDERIZADO DE LA LISTA EN EL PANEL ADMIN
+        window.renderAdminList = () => {
             const list = document.getElementById('admin-modules-list');
             list.innerHTML = '';
-            pageData.sections.forEach((sec, idx) => {
-                let fields = `
-                <select onchange="pageData.sections[${idx}].category = this.value" class="input-dark mb-2 text-[10px] bg-orange-600/20">
-                    <option value="about" ${sec.category === 'about' ? 'selected' : ''}>SOBRE NOSOTROS</option>
-                    <option value="resources" ${sec.category === 'resources' ? 'selected' : ''}>RECURSOS</option>
-                    <option value="info" ${sec.category === 'info' ? 'selected' : ''}>INFORMACIÓN</option>
-                </select>
-                <input type="text" placeholder="Título" value="${sec.title}" onchange="pageData.sections[${idx}].title=this.value" class="input-dark font-bold mb-2">`;
+            
+            window.pageData.sections.forEach((sec, idx) => {
+                const item = document.createElement('div');
+                item.className = "bg-white/5 p-4 rounded-2xl border border-white/10 relative space-y-3";
                 
+                let internalHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-orange-500 uppercase">${sec.type} / ${sec.category}</span>
+                        <button onclick="window.deleteModule(${idx})" class="text-red-500 hover:text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                    <select onchange="window.pageData.sections[${idx}].category = this.value" class="input-dark text-[10px]">
+                        <option value="about" ${sec.category === 'about' ? 'selected' : ''}>Categoría: SOBRE NOSOTROS</option>
+                        <option value="resources" ${sec.category === 'resources' ? 'selected' : ''}>Categoría: RECURSOS</option>
+                        <option value="info" ${sec.category === 'info' ? 'selected' : ''}>Categoría: INFORMACIÓN</option>
+                    </select>
+                    <input type="text" placeholder="Título" value="${sec.title}" oninput="window.pageData.sections[${idx}].title=this.value" class="input-dark font-bold">
+                `;
+
                 if(sec.type === 'team') {
-                    fields += `
-                    <button onclick="pageData.sections[${idx}].members.push({name:'',role:''}); renderAdminList();" class="w-full p-2 bg-white/5 text-[10px] mb-2 rounded-lg border border-dashed border-white/20">+ Integrante</button>
-                    ${sec.members.map((m, mIdx) => `
-                        <div class="grid grid-cols-2 gap-2 mb-2 relative">
-                            <input type="text" placeholder="Nombre" value="${m.name}" onchange="pageData.sections[${idx}].members[${mIdx}].name=this.value" class="input-dark !p-2 !text-[10px]">
-                            <input type="text" placeholder="Cargo" value="${m.role}" onchange="pageData.sections[${idx}].members[${mIdx}].role=this.value" class="input-dark !p-2 !text-[10px]">
-                            <button onclick="pageData.sections[${idx}].members.splice(${mIdx},1); renderAdminList();" class="absolute -right-1 -top-1 bg-red-600 rounded-full w-4 h-4 text-[8px]">×</button>
-                        </div>`).join('')}`;
+                    internalHTML += `
+                        <div class="space-y-2">
+                            ${sec.members.map((m, mIdx) => `
+                                <div class="flex gap-2">
+                                    <input type="text" placeholder="Nombre" value="${m.name}" oninput="window.pageData.sections[${idx}].members[${mIdx}].name=this.value" class="input-dark !p-2 text-xs">
+                                    <input type="text" placeholder="Cargo" value="${m.role}" oninput="window.pageData.sections[${idx}].members[${mIdx}].role=this.value" class="input-dark !p-2 text-xs">
+                                </div>
+                            `).join('')}
+                            <button onclick="window.pageData.sections[${idx}].members.push({name:'',role:''}); window.renderAdminList();" class="w-full p-2 text-[10px] bg-white/10 rounded-lg">+ Miembro</button>
+                        </div>
+                    `;
                 } else {
-                    fields += `
-                    <input type="file" onchange="handleFile(event, ${idx})" class="text-[10px] mb-2 block w-full">
-                    <input type="text" placeholder="Link (Para botón descarga)" value="${sec.link || ''}" onchange="pageData.sections[${idx}].link=this.value" class="input-dark !p-2 text-xs mb-2">
-                    <textarea placeholder="Descripción / Información..." onchange="pageData.sections[${idx}].desc=this.value" class="input-dark !p-2 text-xs h-24">${sec.desc}</textarea>`;
+                    internalHTML += `
+                        <input type="file" onchange="window.handleFile(event, ${idx})" class="text-[10px] block w-full">
+                        <input type="text" placeholder="URL de Descarga (Link)" value="${sec.link || ''}" oninput="window.pageData.sections[${idx}].link=this.value" class="input-dark text-xs">
+                        <textarea placeholder="Descripción..." oninput="window.pageData.sections[${idx}].desc=this.value" class="input-dark text-xs h-20">${sec.desc}</textarea>
+                    `;
                 }
 
-                list.innerHTML += `
-                <div class="bg-white/5 p-4 rounded-2xl border border-white/10 relative">
-                    <button onclick="pageData.sections.splice(${idx},1); renderAdminList();" class="absolute top-2 right-2 text-gray-500 hover:text-red-500">Eliminar</button>
-                    <span class="text-[9px] font-black text-gray-500 block mb-2 uppercase">${sec.type}</span>
-                    ${fields}
-                </div>`;
+                item.innerHTML = internalHTML;
+                list.appendChild(item);
             });
             lucide.createIcons();
-        }
+        };
 
-        window.onload = () => { setFilter('resources'); lucide.createIcons(); };
+        window.onload = () => { 
+            window.setFilter('resources');
+            lucide.createIcons(); 
+        };
     </script>
 </body>
 </html>
