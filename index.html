@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOREVER JA - Distrito Yare</title>
+    <title id="site-title-tag">Portal de Recursos - Elite</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -11,105 +11,159 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        :root { --orange-main: #ff6b00; --orange-glow: rgba(255, 107, 0, 0.3); }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050505; color: white; scroll-behavior: smooth; overflow-x: hidden; }
-        .smoke-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; filter: blur(60px); }
-        .smoke-particle { position: absolute; border-radius: 50%; background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%); animation: moveSmoke 20s infinite linear alternate; }
-        @keyframes moveSmoke { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(20%, 30%) scale(1.5); } 100% { transform: translate(-10%, 10%) scale(1.2); } }
-        .orange-gradient-text { background: linear-gradient(135deg, #fff 30%, #ff8a00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .glass-card { background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .btn-premium { background: linear-gradient(135deg, #ff8a00 0%, #ff4d00 100%); padding: 10px 20px; border-radius: 99px; font-weight: 700; color: white; transition: all 0.3s ease; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-        .admin-sidebar { position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 500px; background: #0a0a0a; z-index: 1000; transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); border-left: 1px solid rgba(255,255,255,0.1); }
+        :root { 
+            --bg-dark: #0a0118;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #f97316;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: white; 
+            overflow-x: hidden;
+        }
+
+        /* --- FONDO DE LUCES (MESH GRADIENT) --- */
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 40%);
+        }
+        .glow-blob {
+            position: absolute;
+            width: 500px; height: 500px;
+            background: var(--accent-purple);
+            filter: blur(120px);
+            opacity: 0.15;
+            border-radius: 50%;
+            animation: float 20s infinite alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 50px); }
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-8px) scale(1.01);
+        }
+
+        .btn-obtain {
+            background: linear-gradient(135deg, #f97316 0%, #d9480f 100%);
+            color: white; font-weight: 800; text-transform: uppercase;
+            padding: 18px; border-radius: 20px; width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            box-shadow: 0 10px 20px rgba(217, 72, 15, 0.3); transition: 0.3s;
+        }
+        .btn-obtain:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(217, 72, 15, 0.5); }
+
+        .admin-sidebar {
+            position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 480px;
+            background: rgba(10, 1, 24, 0.98); backdrop-filter: blur(30px);
+            z-index: 1000; transform: translateX(100%); transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            border-left: 1px solid var(--accent-purple); padding: 2rem; overflow-y: auto;
+        }
         .admin-sidebar.active { transform: translateX(0); }
-        .input-dark { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; font-size: 13px; color: white; outline: none; }
-        #adminAuthScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; }
-        .nav-link { cursor: pointer; font-size: 0.85rem; font-weight: 600; color: #999; transition: all 0.3s; padding-bottom: 4px; border-bottom: 2px solid transparent; }
-        .nav-link.active { color: white; border-bottom: 2px solid var(--orange-main); }
-        #exitScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9999; display: none; }
+
+        .input-dark {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px; border-radius: 16px; width: 100%; color: white; outline: none;
+        }
+        .input-dark:focus { border-color: var(--accent-orange); }
+
+        .type-badge {
+            background: rgba(139, 92, 246, 0.2); color: #c4b5fd;
+            padding: 4px 12px; border-radius: 10px; font-size: 10px; font-weight: 700;
+            text-transform: uppercase; border: 1px solid rgba(139, 92, 246, 0.3);
+        }
     </style>
 </head>
 <body>
 
-    <!-- LOGIN ADMIN -->
-    <div id="adminAuthScreen">
-        <div class="glass-card p-10 rounded-[2.5rem] w-full max-w-md text-center">
-            <h2 class="text-3xl font-bold orange-gradient-text mb-6">Acceso Admin</h2>
-            <input type="password" id="adminPasswordInput" placeholder="Clave de acceso" class="input-dark mb-6 text-center text-xl">
+    <div class="bg-glow">
+        <div class="glow-blob" style="top: 10%; left: 5%;"></div>
+        <div class="glow-blob" style="bottom: 10%; right: 5%; background: var(--accent-orange);"></div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="adminAuthScreen" class="fixed inset-0 z-[2000] hidden items-center justify-center bg-black/90 backdrop-blur-md">
+        <div class="glass-card p-10 w-full max-w-sm text-center">
+            <h2 class="text-3xl font-black mb-6 text-orange-500">ADMIN ACCESS</h2>
+            <input type="password" id="adminPasswordInput" placeholder="Passphrase" class="input-dark mb-6 text-center text-lg">
             <div class="flex gap-4">
-                <button onclick="window.closeAdminAuth()" class="flex-1 p-4 bg-white/5 rounded-xl">Cancelar</button>
-                <button onclick="window.tryAdminAccess()" class="flex-1 p-4 bg-orange-600 rounded-xl font-bold">Entrar</button>
+                <button onclick="window.closeAdminAuth()" class="flex-1 p-4 rounded-2xl bg-white/5">Cancel</button>
+                <button onclick="window.tryAdminAccess()" class="flex-1 p-4 rounded-2xl bg-orange-600 font-bold">Verify</button>
             </div>
         </div>
-    </div>
-
-    <!-- PANTALLA SALIDA -->
-    <div id="exitScreen" onclick="this.style.display='none'">
-        <img src="juego.png" class="w-full h-full object-cover">
-    </div>
-
-    <div class="smoke-container">
-        <div class="smoke-particle" style="width: 800px; height: 800px; top: -10%; left: -10%;"></div>
-        <div class="smoke-particle" style="width: 600px; height: 600px; bottom: 10%; right: -5%;"></div>
     </div>
 
     <!-- NAVBAR -->
-    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/80 backdrop-blur-2xl">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-black border border-white/5 flex items-center justify-center overflow-hidden">
-                    <img src="icono.png" class="w-full h-full object-contain">
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-lg font-extrabold tracking-tighter">FOREVER JA</span>
-                    <span class="text-[8px] uppercase tracking-[0.3em] text-orange-500 font-bold">Distrito Yare</span>
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/40 backdrop-blur-2xl">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img id="site-logo" src="" class="w-14 h-14 rounded-2xl object-cover border border-white/10 bg-white/5">
+                <div>
+                    <h1 class="text-2xl font-black tracking-tighter" id="site-name-display">CARGANDO...</h1>
+                    <p class="text-[10px] text-purple-400 font-bold tracking-[0.3em] uppercase" id="site-desc-display">CARGANDO...</p>
                 </div>
             </div>
-
-            <div class="hidden md:flex gap-8 items-center">
-                <span onclick="window.setFilter('about')" class="nav-link" id="nav-about">Sobre Nosotros</span>
-                <span onclick="window.setFilter('resources')" class="nav-link" id="nav-resources">Recursos</span>
-                <span onclick="window.setFilter('info')" class="nav-link" id="nav-info">Información</span>
-                <button onclick="window.openAdminAuth()" class="text-gray-400 hover:text-white ml-4"><i data-lucide="lock" class="w-5 h-5"></i></button>
-                <button onclick="window.showExit()" class="p-2 bg-red-600/20 text-red-500 rounded-lg"><i data-lucide="log-out" class="w-5 h-5"></i></button>
-            </div>
+            <button onclick="window.openAdminAuth()" class="p-3 rounded-2xl bg-white/5 hover:bg-orange-500/20 text-orange-500 transition">
+                <i data-lucide="shield-lock"></i>
+            </button>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <header class="pt-40 pb-10 px-6 text-center">
-        <div class="max-w-4xl mx-auto" data-aos="fade-up">
-            <h1 class="text-5xl md:text-8xl font-extrabold tracking-tighter orange-gradient-text mb-2">FOREVER JA</h1>
-            <p class="text-gray-500 uppercase tracking-[0.4em] text-xs font-bold">Distrito Yare</p>
+    <!-- CONTENT GRID -->
+    <main class="max-w-7xl mx-auto px-6 pt-40 pb-32">
+        <div id="content-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Items loaded here -->
         </div>
-    </header>
-
-    <section class="max-w-6xl mx-auto px-6 mb-20">
-        <div class="glass-card rounded-[2.5rem] overflow-hidden aspect-video shadow-2xl">
-            <video id="v-main-video" src="123.mp4" controls class="w-full h-full bg-black"></video>
-        </div>
-    </section>
-
-    <!-- CONTENIDO DINÁMICO -->
-    <main id="main-content" class="pb-32 space-y-20"></main>
+    </main>
 
     <!-- ADMIN PANEL -->
-    <aside id="adminPanel" class="admin-sidebar p-8 overflow-y-auto">
-        <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-            <h2 class="text-xl font-bold text-orange-500">Gestor de Contenido</h2>
-            <button onclick="window.toggleAdmin()"><i data-lucide="x"></i></button>
+    <aside id="adminPanel" class="admin-sidebar">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-2xl font-black text-orange-500">WORKSPACE</h2>
+            <button onclick="window.toggleAdmin()" class="p-2 hover:bg-white/5 rounded-full"><i data-lucide="x"></i></button>
         </div>
 
-        <div id="admin-modules-list" class="space-y-6 mb-8">
-            <!-- Los módulos se cargan aquí -->
+        <div class="space-y-8">
+            <section class="p-4 bg-white/5 rounded-3xl">
+                <h3 class="text-xs font-bold text-gray-500 uppercase mb-4 tracking-widest">Identity</h3>
+                <label class="block text-[10px] mb-2 text-orange-400">Logo de la web:</label>
+                <input type="file" onchange="window.handleLogo(event)" class="text-xs mb-4 block">
+                <input type="text" id="config-site-name" placeholder="Web Name" class="input-dark mb-3">
+                <input type="text" id="config-site-desc" placeholder="Short Description" class="input-dark">
+            </section>
+
+            <section>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Your Files</h3>
+                    <button onclick="window.addItem()" class="bg-purple-600 text-[10px] px-4 py-2 rounded-full font-black">+ NEW FILE</button>
+                </div>
+                <div id="admin-items-list" class="space-y-4"></div>
+            </section>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 mb-6">
-            <button onclick="window.addNewModule('team')" class="p-2 bg-purple-600/20 text-[10px] rounded-lg border border-purple-600/40">+ NOSOTROS</button>
-            <button onclick="window.addNewModule('download')" class="p-2 bg-blue-600/20 text-[10px] rounded-lg border border-blue-600/40">+ RECURSO</button>
-            <button onclick="window.addNewModule('info')" class="p-2 bg-orange-600/20 text-[10px] rounded-lg border border-orange-600/40">+ INFO</button>
-        </div>
-
-        <button onclick="window.saveAllChanges()" id="saveBtn" class="w-full py-4 bg-orange-600 rounded-xl font-bold uppercase tracking-widest hover:bg-orange-500 transition">Sincronizar Cambios</button>
+        <button onclick="window.saveToFirebase()" id="saveBtn" class="mt-10 w-full py-5 bg-orange-600 rounded-2xl font-black uppercase tracking-widest hover:brightness-110 transition shadow-lg shadow-orange-900/40">
+            Sync Data
+        </button>
     </aside>
 
     <script type="module">
@@ -128,199 +182,188 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // ESTADO GLOBAL
-        window.activeFilter = 'resources';
-        window.pageData = { adminPass: "JA2025", sections: [] };
+        // Estado local
+        window.siteData = {
+            config: { name: "ELITE PORTAL", description: "EXCLUSIVE CONTENT", logo: "", adminPass: "JA2025" },
+            items: []
+        };
 
-        // Sincronización en tiempo real desde Firebase
-        onSnapshot(doc(db, "forever_ja", "config"), (docSnap) => {
+        // Escuchar datos de Firebase
+        onSnapshot(doc(db, "portal_v2", "data"), (docSnap) => {
             if (docSnap.exists()) {
-                window.pageData = docSnap.data();
-                if (!window.pageData.sections) window.pageData.sections = [];
-                window.renderPage();
+                window.siteData = docSnap.data();
+                window.renderPublic();
+                console.log("Datos sincronizados desde Firebase");
+            } else {
+                console.log("No hay datos en Firebase, usando valores por defecto.");
+                window.renderPublic();
             }
         });
 
-        // FUNCIONES DE NAVEGACIÓN
-        window.setFilter = (f) => {
-            window.activeFilter = f;
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            const activeNav = document.getElementById('nav-' + f);
-            if (activeNav) activeNav.classList.add('active');
-            window.renderPage();
-        };
-
-        window.showExit = () => { document.getElementById('exitScreen').style.display = 'block'; };
-
-        // FUNCIONES DE ADMIN AUTH
+        // --- AUTH & PANEL ---
         window.openAdminAuth = () => { document.getElementById('adminAuthScreen').style.display = 'flex'; };
         window.closeAdminAuth = () => { document.getElementById('adminAuthScreen').style.display = 'none'; };
+        
         window.tryAdminAccess = () => {
             const pass = document.getElementById('adminPasswordInput').value;
-            if (pass === window.pageData.adminPass || pass === "JA2025") {
+            if (pass === window.siteData.config.adminPass) {
                 window.closeAdminAuth();
                 window.toggleAdmin();
             } else {
-                alert("Clave incorrecta");
+                alert("Acceso Denegado.");
             }
         };
 
-        // GESTIÓN DE PANEL
         window.toggleAdmin = () => {
             const panel = document.getElementById('adminPanel');
             panel.classList.toggle('active');
-            if (panel.classList.contains('active')) window.renderAdminList();
+            if(panel.classList.contains('active')) window.renderAdmin();
         };
 
-        // AÑADIR SECCIONES
-        window.addNewModule = (type) => {
-            const cat = type === 'team' ? 'about' : (type === 'download' ? 'resources' : 'info');
-            window.pageData.sections.push({
+        // --- LÓGICA DE DATOS ---
+        window.addItem = () => {
+            window.siteData.items.unshift({
                 id: Date.now(),
-                type: type,
-                category: cat,
-                title: "Nuevo Título",
-                desc: "Descripción aquí...",
+                title: "Nuevo Recurso",
+                desc: "Descripción...",
+                type: "pdf",
                 link: "",
-                image: "",
-                members: type === 'team' ? [{name: "Nombre", role: "Cargo"}] : []
+                image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800"
             });
-            window.renderAdminList();
+            window.renderAdmin();
         };
 
-        window.deleteModule = (index) => {
-            window.pageData.sections.splice(index, 1);
-            window.renderAdminList();
+        window.deleteItem = (idx) => {
+            window.siteData.items.splice(idx, 1);
+            window.renderAdmin();
         };
 
-        // MANEJO DE IMÁGENES
-        window.handleFile = (e, index) => {
+        window.handleFile = (e, index, field) => {
             const file = e.target.files[0];
             if (!file) return;
+
+            // Alerta de tamaño (Firestore tiene un límite de 1MB por documento total)
+            if (file.size > 200000) { 
+                alert("La imagen es muy pesada. Intenta con una menor a 200kb.");
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = () => {
-                window.pageData.sections[index].image = reader.result;
-                window.renderAdminList();
+                if(field === 'logo') window.siteData.config.logo = reader.result;
+                else window.siteData.items[index].image = reader.result;
+                window.renderAdmin();
+                window.renderPublic();
             };
             reader.readAsDataURL(file);
         };
+        
+        window.handleLogo = (e) => window.handleFile(e, null, 'logo');
 
-        // GUARDAR EN FIREBASE
-        window.saveAllChanges = async () => {
+        // --- GUARDAR EN FIREBASE (CORREGIDO) ---
+        window.saveToFirebase = async () => {
             const btn = document.getElementById('saveBtn');
-            btn.innerText = "Guardando...";
+            btn.innerText = "Sincronizando...";
+            btn.disabled = true;
+
+            // Capturar valores actuales de los inputs de texto del config
+            window.siteData.config.name = document.getElementById('config-site-name').value;
+            window.siteData.config.description = document.getElementById('config-site-desc').value;
+
             try {
-                await setDoc(doc(db, "forever_ja", "config"), window.pageData);
-                alert("¡Cambios guardados correctamente!");
+                // Clonar objeto para evitar errores de referencia y limpiar undefineds
+                const dataToSave = JSON.parse(JSON.stringify(window.siteData));
+                
+                await setDoc(doc(db, "portal_v2", "data"), dataToSave);
+                
+                alert("¡Datos guardados con éxito!");
                 window.toggleAdmin();
             } catch (error) {
-                console.error(error);
-                alert("Error al guardar");
+                console.error("Error al guardar en Firebase:", error);
+                alert("Error al guardar. Revisa la consola (F12) para más detalles.");
+            } finally {
+                btn.innerText = "Sync Data";
+                btn.disabled = false;
             }
-            btn.innerText = "Sincronizar Cambios";
         };
 
-        // RENDERIZADO DE LA PÁGINA PÚBLICA
-        window.renderPage = () => {
-            const container = document.getElementById('main-content');
-            container.innerHTML = '';
-            
-            const filtered = window.pageData.sections.filter(s => s.category === window.activeFilter);
+        // --- RENDERIZADO ---
+        const getFileIcon = (type) => {
+            if(type === 'pdf') return '<i data-lucide="file-text"></i>';
+            if(type === 'excel') return '<i data-lucide="file-spreadsheet"></i>';
+            return '<i data-lucide="external-link"></i>';
+        };
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center text-gray-600 py-20">No hay contenido en esta sección todavía.</div>`;
-            }
+        window.renderPublic = () => {
+            const config = window.siteData.config;
+            document.getElementById('site-name-display').innerText = config.name;
+            document.getElementById('site-desc-display').innerText = config.description;
+            document.getElementById('site-logo').src = config.logo || 'https://via.placeholder.com/100';
 
-            filtered.forEach(sec => {
-                let html = '';
-                if(sec.type === 'team') {
-                    html = `
-                    <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <h2 class="text-3xl md:text-5xl font-black mb-10 tracking-tighter text-center">${sec.title}</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            ${sec.members.map(m => `
-                                <div class="glass-card p-8 rounded-3xl border border-white/5 text-center">
-                                    <h3 class="text-2xl font-bold">${m.name}</h3>
-                                    <p class="text-orange-500 font-bold uppercase text-[10px] tracking-widest">${m.role}</p>
+            const grid = document.getElementById('content-grid');
+            grid.innerHTML = '';
+
+            window.siteData.items.forEach(item => {
+                grid.innerHTML += `
+                    <div class="glass-card group" data-aos="zoom-in-up">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="${item.image}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0118] via-transparent to-transparent"></div>
+                            <div class="absolute top-6 right-6"><span class="type-badge">${item.type}</span></div>
+                        </div>
+                        <div class="p-8 -mt-10 relative z-10">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-purple-600/20 flex items-center justify-center text-purple-400 border border-purple-500/30">
+                                    ${getFileIcon(item.type)}
                                 </div>
-                            `).join('')}
-                        </div>
-                    </div>`;
-                } else {
-                    html = `
-                    <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
-                        <div class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row items-center border border-white/5">
-                            <div class="w-full md:w-1/2 aspect-video bg-white/5">
-                                <img src="${sec.image || 'https://via.placeholder.com/800x450?text=Sin+Imagen'}" class="w-full h-full object-cover">
+                                <h3 class="text-2xl font-extrabold leading-tight">${item.title}</h3>
                             </div>
-                            <div class="w-full md:w-1/2 p-10 md:p-16 space-y-6">
-                                <h2 class="text-2xl md:text-4xl font-black tracking-tighter">${sec.title}</h2>
-                                <p class="text-gray-400 leading-relaxed whitespace-pre-wrap">${sec.desc}</p>
-                                ${sec.type === 'download' ? 
-                                    `<a href="${sec.link}" target="_blank" download class="btn-premium">
-                                        <i data-lucide="download"></i> Descargar Recurso
-                                    </a>` : ''}
-                            </div>
+                            <p class="text-gray-400 text-sm mb-8 leading-relaxed line-clamp-3">${item.desc}</p>
+                            <a href="${item.link || '#'}" target="_blank" class="btn-obtain">
+                                OBTENER
+                                <i data-lucide="arrow-right-circle"></i>
+                            </a>
                         </div>
-                    </div>`;
-                }
-                container.innerHTML += html;
+                    </div>
+                `;
             });
             lucide.createIcons();
             AOS.init();
         };
 
-        // RENDERIZADO DE LA LISTA EN EL PANEL ADMIN
-        window.renderAdminList = () => {
-            const list = document.getElementById('admin-modules-list');
-            list.innerHTML = '';
+        window.renderAdmin = () => {
+            document.getElementById('config-site-name').value = window.siteData.config.name;
+            document.getElementById('config-site-desc').value = window.siteData.config.description;
             
-            window.pageData.sections.forEach((sec, idx) => {
-                const item = document.createElement('div');
-                item.className = "bg-white/5 p-4 rounded-2xl border border-white/10 relative space-y-3";
-                
-                let internalHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-bold text-orange-500 uppercase">${sec.type} / ${sec.category}</span>
-                        <button onclick="window.deleteModule(${idx})" class="text-red-500 hover:text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            const list = document.getElementById('admin-items-list');
+            list.innerHTML = '';
+
+            window.siteData.items.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = "bg-white/5 p-6 rounded-3xl border border-white/10";
+                div.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <select onchange="window.siteData.items[${idx}].type=this.value; window.renderAdmin();" class="bg-transparent text-[10px] font-bold text-purple-400 outline-none">
+                            <option value="pdf" ${item.type==='pdf'?'selected':''}>PDF</option>
+                            <option value="excel" ${item.type==='excel'?'selected':''}>EXCEL</option>
+                            <option value="link" ${item.type==='link'?'selected':''}>LINK</option>
+                        </select>
+                        <button onclick="window.deleteItem(${idx})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
-                    <select onchange="window.pageData.sections[${idx}].category = this.value" class="input-dark text-[10px]">
-                        <option value="about" ${sec.category === 'about' ? 'selected' : ''}>Categoría: SOBRE NOSOTROS</option>
-                        <option value="resources" ${sec.category === 'resources' ? 'selected' : ''}>Categoría: RECURSOS</option>
-                        <option value="info" ${sec.category === 'info' ? 'selected' : ''}>Categoría: INFORMACIÓN</option>
-                    </select>
-                    <input type="text" placeholder="Título" value="${sec.title}" oninput="window.pageData.sections[${idx}].title=this.value" class="input-dark font-bold">
+                    <input type="text" value="${item.title}" oninput="window.siteData.items[${idx}].title=this.value" class="input-dark mb-2 text-sm" placeholder="Title">
+                    <textarea oninput="window.siteData.items[${idx}].desc=this.value" class="input-dark mb-2 h-20 text-xs" placeholder="Description">${item.desc}</textarea>
+                    <label class="block text-[10px] text-gray-500 mb-1">Imagen del recurso:</label>
+                    <input type="file" onchange="window.handleFile(event, ${idx}, 'item')" class="text-[10px] mb-2 block">
+                    <input type="text" value="${item.link}" oninput="window.siteData.items[${idx}].link=this.value" class="input-dark text-xs" placeholder="Enlace (http://...)">
                 `;
-
-                if(sec.type === 'team') {
-                    internalHTML += `
-                        <div class="space-y-2">
-                            ${sec.members.map((m, mIdx) => `
-                                <div class="flex gap-2">
-                                    <input type="text" placeholder="Nombre" value="${m.name}" oninput="window.pageData.sections[${idx}].members[${mIdx}].name=this.value" class="input-dark !p-2 text-xs">
-                                    <input type="text" placeholder="Cargo" value="${m.role}" oninput="window.pageData.sections[${idx}].members[${mIdx}].role=this.value" class="input-dark !p-2 text-xs">
-                                </div>
-                            `).join('')}
-                            <button onclick="window.pageData.sections[${idx}].members.push({name:'',role:''}); window.renderAdminList();" class="w-full p-2 text-[10px] bg-white/10 rounded-lg">+ Miembro</button>
-                        </div>
-                    `;
-                } else {
-                    internalHTML += `
-                        <input type="file" onchange="window.handleFile(event, ${idx})" class="text-[10px] block w-full">
-                        <input type="text" placeholder="URL de Descarga (Link)" value="${sec.link || ''}" oninput="window.pageData.sections[${idx}].link=this.value" class="input-dark text-xs">
-                        <textarea placeholder="Descripción..." oninput="window.pageData.sections[${idx}].desc=this.value" class="input-dark text-xs h-20">${sec.desc}</textarea>
-                    `;
-                }
-
-                item.innerHTML = internalHTML;
-                list.appendChild(item);
+                list.appendChild(div);
             });
             lucide.createIcons();
         };
 
         window.onload = () => { 
-            window.setFilter('resources');
             lucide.createIcons(); 
+            AOS.init(); 
         };
     </script>
 </body>
