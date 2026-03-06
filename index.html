@@ -3,173 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="site-title-tag">Portal de Recursos - Elite</title>
+    <title>Zentra | Finance App Directory</title>
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Fuentes y Animaciones -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-
+    
     <style>
-        :root { 
-            --bg-dark: #0a0118;
-            --accent-purple: #8b5cf6;
-            --accent-orange: #f97316;
-            --glass: rgba(255, 255, 255, 0.03);
+        :root {
+            --primary: #ff4d2a;
+            --secondary: #4d7fff;
+            --bg-dark: #08080a;
+            --glass: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #ff4d2a 0%, #ff8e2a 100%);
         }
 
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--bg-dark); 
-            color: white; 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* --- FONDO DE LUCES (MESH GRADIENT) --- */
+        /* Fondo Animado de Gradientes (Igual a la imagen) */
         .bg-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
             background: 
-                radial-gradient(circle at 10% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 40%);
-        }
-        .glow-blob {
-            position: absolute;
-            width: 500px; height: 500px;
-            background: var(--accent-purple);
-            filter: blur(120px);
-            opacity: 0.15;
-            border-radius: 50%;
-            animation: float 20s infinite alternate;
+                radial-gradient(circle at 10% 20%, rgba(255, 77, 42, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(77, 127, 255, 0.15) 0%, transparent 40%);
+            z-index: -1;
         }
 
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(100px, 50px); }
+        /* Navbar */
+        nav {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
         }
 
-        .glass-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-            backdrop-filter: blur(20px);
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--primary); }
+
+        .search-bar {
+            background: var(--glass);
             border: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 50px;
+            width: 40%;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-bar:focus { width: 50%; border-color: var(--primary); box-shadow: 0 0 15px rgba(255, 77, 42, 0.3); }
+
+        /* Hero */
+        header { padding: 80px 5% 40px; text-align: center; }
+        header h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 15px; }
+        header span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Grid de Tarjetas */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 40px 5%;
+            perspective: 1000px;
+        }
+
+        /* Tarjeta Estilo 3D & Glassmorphism */
+        .card {
+            background: var(--glass);
             border-radius: 28px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .glass-card:hover {
-            border-color: rgba(139, 92, 246, 0.5);
-            transform: translateY(-8px) scale(1.01);
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
         }
 
-        .btn-obtain {
-            background: linear-gradient(135deg, #f97316 0%, #d9480f 100%);
-            color: white; font-weight: 800; text-transform: uppercase;
-            padding: 18px; border-radius: 20px; width: 100%;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            box-shadow: 0 10px 20px rgba(217, 72, 15, 0.3); transition: 0.3s;
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-        .btn-obtain:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(217, 72, 15, 0.5); }
 
-        .admin-sidebar {
-            position: fixed; right: 0; top: 0; height: 100%; width: 100%; max-width: 480px;
-            background: rgba(10, 1, 24, 0.98); backdrop-filter: blur(30px);
-            z-index: 1000; transform: translateX(100%); transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            border-left: 1px solid var(--accent-purple); padding: 2rem; overflow-y: auto;
+        .card-img {
+            width: 100%;
+            aspect-ratio: 16/9; /* Tamaño 1920x1080 adaptado */
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 20px;
         }
-        .admin-sidebar.active { transform: translateX(0); }
 
-        .input-dark {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px; border-radius: 16px; width: 100%; color: white; outline: none;
+        .card-content h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .card-content p { color: #888; font-size: 0.95rem; line-height: 1.6; min-height: 50px; }
+
+        .btn-download {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-weight: 700;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
         }
-        .input-dark:focus { border-color: var(--accent-orange); }
 
-        .type-badge {
-            background: rgba(139, 92, 246, 0.2); color: #c4b5fd;
-            padding: 4px 12px; border-radius: 10px; font-size: 10px; font-weight: 700;
-            text-transform: uppercase; border: 1px solid rgba(139, 92, 246, 0.3);
+        .btn-download:hover { transform: scale(1.03); filter: brightness(1.1); }
+
+        /* Panel Admin Modal */
+        .modal {
+            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background: #121214; padding: 40px; border-radius: 30px; width: 90%; max-width: 500px;
+            border: 1px solid var(--primary);
+        }
+
+        input, textarea {
+            width: 100%; padding: 15px; margin-bottom: 15px; background: #1a1a1c;
+            border: 1px solid #333; color: white; border-radius: 12px; outline: none;
+        }
+
+        .btn-admin { background: white; color: black; padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; border:none;}
+
+        /* Móvil */
+        @media (max-width: 768px) {
+            .search-bar { width: 100%; margin-top: 15px; }
+            nav { flex-direction: column; }
+            .container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow">
-        <div class="glow-blob" style="top: 10%; left: 5%;"></div>
-        <div class="glow-blob" style="bottom: 10%; right: 5%; background: var(--accent-orange);"></div>
-    </div>
+    <div class="bg-glow"></div>
 
-    <!-- LOGIN MODAL -->
-    <div id="adminAuthScreen" class="fixed inset-0 z-[2000] hidden items-center justify-center bg-black/90 backdrop-blur-md">
-        <div class="glass-card p-10 w-full max-w-sm text-center">
-            <h2 class="text-3xl font-black mb-6 text-orange-500">ADMIN ACCESS</h2>
-            <input type="password" id="adminPasswordInput" placeholder="Passphrase" class="input-dark mb-6 text-center text-lg">
-            <div class="flex gap-4">
-                <button onclick="window.closeAdminAuth()" class="flex-1 p-4 rounded-2xl bg-white/5">Cancel</button>
-                <button onclick="window.tryAdminAccess()" class="flex-1 p-4 rounded-2xl bg-orange-600 font-bold">Verify</button>
-            </div>
+    <nav>
+        <div class="logo">
+            <svg width="30" height="30" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 0C9.84974 0 0 9.84974 0 22C0 34.1503 9.84974 44 22 44C34.1503 44 44 34.1503 44 22C44 9.84974 34.1503 0 22 0ZM32 24H12V20H32V24Z" fill="white"/></svg>
+            Zentra <span>App</span>
         </div>
-    </div>
-
-    <!-- NAVBAR -->
-    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/40 backdrop-blur-2xl">
-        <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <img id="site-logo" src="" class="w-14 h-14 rounded-2xl object-cover border border-white/10 bg-white/5">
-                <div>
-                    <h1 class="text-2xl font-black tracking-tighter" id="site-name-display">CARGANDO...</h1>
-                    <p class="text-[10px] text-purple-400 font-bold tracking-[0.3em] uppercase" id="site-desc-display">CARGANDO...</p>
-                </div>
-            </div>
-            <button onclick="window.openAdminAuth()" class="p-3 rounded-2xl bg-white/5 hover:bg-orange-500/20 text-orange-500 transition">
-                <i data-lucide="shield-lock"></i>
-            </button>
-        </div>
+        <input type="text" id="searchInput" class="search-bar" placeholder="Buscar planes financieros...">
+        <button class="btn-admin" onclick="openAdmin()">Acceso Admin</button>
     </nav>
 
-    <!-- CONTENT GRID -->
-    <main class="max-w-7xl mx-auto px-6 pt-40 pb-32">
-        <div id="content-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Items loaded here -->
-        </div>
+    <header>
+        <h1 data-aos="fade-down">Construye tu Futuro con <span>Confianza</span></h1>
+        <p data-aos="fade-up" style="color: #888;">Explora recursos exclusivos de alta calidad.</p>
+    </header>
+
+    <main class="container" id="cardsGrid">
+        <!-- Las tarjetas se generan aquí -->
     </main>
 
-    <!-- ADMIN PANEL -->
-    <aside id="adminPanel" class="admin-sidebar">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="text-2xl font-black text-orange-500">WORKSPACE</h2>
-            <button onclick="window.toggleAdmin()" class="p-2 hover:bg-white/5 rounded-full"><i data-lucide="x"></i></button>
+    <!-- MODAL ADMINISTRADOR -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <div id="loginSection">
+                <h2 style="margin-bottom:20px">🔐 Panel Seguro</h2>
+                <input type="email" id="email" placeholder="Email (admin@zentra.com)">
+                <input type="password" id="pass" placeholder="Contraseña">
+                <button class="btn-download" onclick="handleLogin()">Entrar</button>
+            </div>
+            
+            <div id="uploadSection" style="display:none">
+                <h2 style="margin-bottom:20px">✨ Crear Nueva Tarjeta</h2>
+                <input type="text" id="title" placeholder="Nombre de la tarjeta">
+                <textarea id="desc" placeholder="Descripción corta..."></textarea>
+                <input type="text" id="imgUrl" placeholder="URL Imagen (1920x1080)">
+                <button class="btn-download" onclick="saveCard()">Publicar en tiempo real</button>
+            </div>
+            <button onclick="closeAdmin()" style="margin-top:10px; background:none; color:#555; border:none; cursor:pointer">Cerrar</button>
         </div>
+    </div>
 
-        <div class="space-y-8">
-            <section class="p-4 bg-white/5 rounded-3xl">
-                <h3 class="text-xs font-bold text-gray-500 uppercase mb-4 tracking-widest">Identity</h3>
-                <label class="block text-[10px] mb-2 text-orange-400">Logo de la web:</label>
-                <input type="file" onchange="window.handleLogo(event)" class="text-xs mb-4 block">
-                <input type="text" id="config-site-name" placeholder="Web Name" class="input-dark mb-3">
-                <input type="text" id="config-site-desc" placeholder="Short Description" class="input-dark">
-            </section>
+    <!-- SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-            <section>
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Your Files</h3>
-                    <button onclick="window.addItem()" class="bg-purple-600 text-[10px] px-4 py-2 rounded-full font-black">+ NEW FILE</button>
-                </div>
-                <div id="admin-items-list" class="space-y-4"></div>
-            </section>
-        </div>
-
-        <button onclick="window.saveToFirebase()" id="saveBtn" class="mt-10 w-full py-5 bg-orange-600 rounded-2xl font-black uppercase tracking-widest hover:brightness-110 transition shadow-lg shadow-orange-900/40">
-            Sync Data
-        </button>
-    </aside>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+    <script>
+        // 1. CONFIGURACIÓN FIREBASE (REEMPLAZA ESTO)
         const firebaseConfig = {
             apiKey: "AIzaSyCgw6tbUFKu1uHFkO6MFbmRUsvd8wXVH58",
             authDomain: "forever-ja.firebaseapp.com",
@@ -179,192 +215,80 @@
             appId: "1:774693890413:web:d4118e797cb42f3de55264"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        AOS.init({ duration: 1000, once: true });
 
-        // Estado local
-        window.siteData = {
-            config: { name: "ELITE PORTAL", description: "EXCLUSIVE CONTENT", logo: "", adminPass: "JA2025" },
-            items: []
-        };
-
-        // Escuchar datos de Firebase
-        onSnapshot(doc(db, "portal_v2", "data"), (docSnap) => {
-            if (docSnap.exists()) {
-                window.siteData = docSnap.data();
-                window.renderPublic();
-                console.log("Datos sincronizados desde Firebase");
-            } else {
-                console.log("No hay datos en Firebase, usando valores por defecto.");
-                window.renderPublic();
-            }
+        // 2. CARGA EN TIEMPO REAL
+        db.collection("cards").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+            const grid = document.getElementById('cardsGrid');
+            grid.innerHTML = '';
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                grid.innerHTML += `
+                    <div class="card" data-aos="zoom-in-up">
+                        <img src="${data.image}" class="card-img" alt="1920x1080 resource">
+                        <div class="card-content">
+                            <h3>${data.title}</h3>
+                            <p>${data.description}</p>
+                            <button class="btn-download" onclick="downloadImage('${data.image}')">
+                                ⬇️ Descargar (1080p)
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
         });
 
-        // --- AUTH & PANEL ---
-        window.openAdminAuth = () => { document.getElementById('adminAuthScreen').style.display = 'flex'; };
-        window.closeAdminAuth = () => { document.getElementById('adminAuthScreen').style.display = 'none'; };
-        
-        window.tryAdminAccess = () => {
-            const pass = document.getElementById('adminPasswordInput').value;
-            if (pass === window.siteData.config.adminPass) {
-                window.closeAdminAuth();
-                window.toggleAdmin();
+        // 3. LÓGICA DE BÚSQUEDA
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(term) ? 'block' : 'none';
+            });
+        });
+
+        // 4. SISTEMA ADMINISTRADOR
+        function openAdmin() { document.getElementById('adminModal').style.display = 'flex'; }
+        function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+
+        function handleLogin() {
+            const u = document.getElementById('email').value;
+            const p = document.getElementById('pass').value;
+            if(u === "admin@zentra.com" && p === "Zentra2024!") {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('uploadSection').style.display = 'block';
             } else {
-                alert("Acceso Denegado.");
+                alert("Acceso incorrecto");
             }
-        };
+        }
 
-        window.toggleAdmin = () => {
-            const panel = document.getElementById('adminPanel');
-            panel.classList.toggle('active');
-            if(panel.classList.contains('active')) window.renderAdmin();
-        };
+        async function saveCard() {
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('desc').value;
+            const image = document.getElementById('imgUrl').value;
 
-        // --- LÓGICA DE DATOS ---
-        window.addItem = () => {
-            window.siteData.items.unshift({
-                id: Date.now(),
-                title: "Nuevo Recurso",
-                desc: "Descripción...",
-                type: "pdf",
-                link: "",
-                image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800"
+            if(!title || !image) return alert("Por favor completa los campos");
+
+            await db.collection("cards").add({
+                title, description, image,
+                createdAt: new Date()
             });
-            window.renderAdmin();
-        };
 
-        window.deleteItem = (idx) => {
-            window.siteData.items.splice(idx, 1);
-            window.renderAdmin();
-        };
+            alert("¡Publicado con éxito!");
+            closeAdmin();
+        }
 
-        window.handleFile = (e, index, field) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            // Alerta de tamaño (Firestore tiene un límite de 1MB por documento total)
-            if (file.size > 200000) { 
-                alert("La imagen es muy pesada. Intenta con una menor a 200kb.");
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = () => {
-                if(field === 'logo') window.siteData.config.logo = reader.result;
-                else window.siteData.items[index].image = reader.result;
-                window.renderAdmin();
-                window.renderPublic();
-            };
-            reader.readAsDataURL(file);
-        };
-        
-        window.handleLogo = (e) => window.handleFile(e, null, 'logo');
-
-        // --- GUARDAR EN FIREBASE (CORREGIDO) ---
-        window.saveToFirebase = async () => {
-            const btn = document.getElementById('saveBtn');
-            btn.innerText = "Sincronizando...";
-            btn.disabled = true;
-
-            // Capturar valores actuales de los inputs de texto del config
-            window.siteData.config.name = document.getElementById('config-site-name').value;
-            window.siteData.config.description = document.getElementById('config-site-desc').value;
-
-            try {
-                // Clonar objeto para evitar errores de referencia y limpiar undefineds
-                const dataToSave = JSON.parse(JSON.stringify(window.siteData));
-                
-                await setDoc(doc(db, "portal_v2", "data"), dataToSave);
-                
-                alert("¡Datos guardados con éxito!");
-                window.toggleAdmin();
-            } catch (error) {
-                console.error("Error al guardar en Firebase:", error);
-                alert("Error al guardar. Revisa la consola (F12) para más detalles.");
-            } finally {
-                btn.innerText = "Sync Data";
-                btn.disabled = false;
-            }
-        };
-
-        // --- RENDERIZADO ---
-        const getFileIcon = (type) => {
-            if(type === 'pdf') return '<i data-lucide="file-text"></i>';
-            if(type === 'excel') return '<i data-lucide="file-spreadsheet"></i>';
-            return '<i data-lucide="external-link"></i>';
-        };
-
-        window.renderPublic = () => {
-            const config = window.siteData.config;
-            document.getElementById('site-name-display').innerText = config.name;
-            document.getElementById('site-desc-display').innerText = config.description;
-            document.getElementById('site-logo').src = config.logo || 'https://via.placeholder.com/100';
-
-            const grid = document.getElementById('content-grid');
-            grid.innerHTML = '';
-
-            window.siteData.items.forEach(item => {
-                grid.innerHTML += `
-                    <div class="glass-card group" data-aos="zoom-in-up">
-                        <div class="relative h-64 overflow-hidden">
-                            <img src="${item.image}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0118] via-transparent to-transparent"></div>
-                            <div class="absolute top-6 right-6"><span class="type-badge">${item.type}</span></div>
-                        </div>
-                        <div class="p-8 -mt-10 relative z-10">
-                            <div class="flex items-center gap-4 mb-4">
-                                <div class="w-12 h-12 rounded-2xl bg-purple-600/20 flex items-center justify-center text-purple-400 border border-purple-500/30">
-                                    ${getFileIcon(item.type)}
-                                </div>
-                                <h3 class="text-2xl font-extrabold leading-tight">${item.title}</h3>
-                            </div>
-                            <p class="text-gray-400 text-sm mb-8 leading-relaxed line-clamp-3">${item.desc}</p>
-                            <a href="${item.link || '#'}" target="_blank" class="btn-obtain">
-                                OBTENER
-                                <i data-lucide="arrow-right-circle"></i>
-                            </a>
-                        </div>
-                    </div>
-                `;
-            });
-            lucide.createIcons();
-            AOS.init();
-        };
-
-        window.renderAdmin = () => {
-            document.getElementById('config-site-name').value = window.siteData.config.name;
-            document.getElementById('config-site-desc').value = window.siteData.config.description;
-            
-            const list = document.getElementById('admin-items-list');
-            list.innerHTML = '';
-
-            window.siteData.items.forEach((item, idx) => {
-                const div = document.createElement('div');
-                div.className = "bg-white/5 p-6 rounded-3xl border border-white/10";
-                div.innerHTML = `
-                    <div class="flex justify-between items-center mb-4">
-                        <select onchange="window.siteData.items[${idx}].type=this.value; window.renderAdmin();" class="bg-transparent text-[10px] font-bold text-purple-400 outline-none">
-                            <option value="pdf" ${item.type==='pdf'?'selected':''}>PDF</option>
-                            <option value="excel" ${item.type==='excel'?'selected':''}>EXCEL</option>
-                            <option value="link" ${item.type==='link'?'selected':''}>LINK</option>
-                        </select>
-                        <button onclick="window.deleteItem(${idx})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    </div>
-                    <input type="text" value="${item.title}" oninput="window.siteData.items[${idx}].title=this.value" class="input-dark mb-2 text-sm" placeholder="Title">
-                    <textarea oninput="window.siteData.items[${idx}].desc=this.value" class="input-dark mb-2 h-20 text-xs" placeholder="Description">${item.desc}</textarea>
-                    <label class="block text-[10px] text-gray-500 mb-1">Imagen del recurso:</label>
-                    <input type="file" onchange="window.handleFile(event, ${idx}, 'item')" class="text-[10px] mb-2 block">
-                    <input type="text" value="${item.link}" oninput="window.siteData.items[${idx}].link=this.value" class="input-dark text-xs" placeholder="Enlace (http://...)">
-                `;
-                list.appendChild(div);
-            });
-            lucide.createIcons();
-        };
-
-        window.onload = () => { 
-            lucide.createIcons(); 
-            AOS.init(); 
-        };
+        // 5. FUNCIÓN DESCARGAR
+        function downloadImage(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Zentra_Finanzas_Premium.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     </script>
 </body>
 </html>
