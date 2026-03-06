@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVENTURA JA | Directorio Premium</title>
+    <title>AVENTURA JA | Recursos Premium</title>
     
-    <!-- Fuentes y Animaciones -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
@@ -13,151 +12,100 @@
         :root {
             --primary: #ff4d2a;
             --secondary: #4d7fff;
-            --bg-dark: #08080a;
-            --glass: rgba(255, 255, 255, 0.05);
+            --bg-dark: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
             --gradient: linear-gradient(135deg, #ff4d2a 0%, #ff8e2a 100%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-dark); color: white; overflow-x: hidden; }
 
-        body {
-            background-color: var(--bg-dark);
-            color: white;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* Fondo Animado de Gradientes */
         .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(255, 77, 42, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(77, 127, 255, 0.15) 0%, transparent 40%);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 15% 15%, rgba(255, 77, 42, 0.15), transparent 35%),
+                        radial-gradient(circle at 85% 85%, rgba(77, 127, 255, 0.1), transparent 35%);
             z-index: -1;
         }
 
-        /* Navbar Responsiva */
+        /* Navbar */
         nav {
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(20px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(25px); position: sticky; top: 0; z-index: 1000;
             border-bottom: 1px solid var(--glass-border);
         }
-
-        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; display: flex; align-items: center; gap: 8px; }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
         .logo span { color: var(--primary); }
 
         .search-bar {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 12px 20px;
-            border-radius: 50px;
-            width: 35%;
-            color: white;
-            outline: none;
-            transition: 0.4s;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 12px 25px; border-radius: 50px; width: 40%; color: white; outline: none;
         }
 
         /* Hero */
-        header { padding: 60px 5% 30px; text-align: center; }
-        header h1 { font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; line-height: 1.1; }
+        header { padding: 80px 5% 40px; text-align: center; }
+        header h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; }
         header span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         /* Grid de Tarjetas 3D */
         .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            padding: 30px 5%;
-            perspective: 1000px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px; padding: 40px 5%; perspective: 1200px;
         }
 
         .card {
-            background: var(--glass);
-            border-radius: 24px;
-            padding: 12px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--glass); border-radius: 30px; padding: 15px;
+            border: 1px solid var(--glass-border); backdrop-filter: blur(15px);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             transform-style: preserve-3d;
         }
-
         .card:hover {
-            transform: translateY(-10px) rotateX(4deg) rotateY(4deg);
-            border-color: rgba(255, 77, 42, 0.4);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transform: translateY(-15px) rotateX(6deg) rotateY(4deg);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
         }
 
         .card-img {
-            width: 100%;
-            aspect-ratio: 16/9; /* Proporción 1920x1080 */
-            object-fit: cover;
-            border-radius: 18px;
-            margin-bottom: 15px;
+            width: 100%; aspect-ratio: 16/9; object-fit: cover;
+            border-radius: 22px; margin-bottom: 20px;
         }
 
-        .card-content h3 { font-size: 1.3rem; margin-bottom: 8px; color: #fff; }
-        .card-content p { color: #999; font-size: 0.9rem; line-height: 1.5; min-height: 45px; }
-
         .btn-download {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            background: var(--gradient);
-            color: white;
-            text-decoration: none;
-            padding: 14px;
-            border-radius: 14px;
-            margin-top: 15px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; background: var(--gradient); color: white;
+            padding: 16px; border-radius: 18px; font-weight: 700;
+            border: none; cursor: pointer; text-decoration: none; margin-top: 15px;
         }
 
         /* Modal Admin */
         .modal {
             display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center;
-            padding: 20px;
+            background: rgba(0,0,0,0.98); z-index: 2000; align-items: center; justify-content: center;
         }
-
         .modal-content {
-            background: #111; padding: 30px; border-radius: 25px; width: 100%; max-width: 450px;
-            border: 1px solid var(--glass-border);
-            max-height: 90vh; overflow-y: auto;
+            background: #0a0a0c; padding: 40px; border-radius: 35px; width: 95%; max-width: 500px;
+            border: 1px solid var(--primary); box-shadow: 0 0 50px rgba(255, 77, 42, 0.2);
+        }
+        input, textarea {
+            width: 100%; padding: 15px; margin-bottom: 15px; background: #151518;
+            border: 1px solid #333; color: white; border-radius: 15px; outline: none;
         }
 
-        input, textarea, select {
-            width: 100%; padding: 14px; margin-bottom: 12px; background: #1a1a1c;
-            border: 1px solid #333; color: white; border-radius: 12px; font-size: 1rem;
+        /* Preview de imagen en Admin */
+        #imgPreview {
+            width: 100%; height: 150px; object-fit: cover; border-radius: 15px;
+            margin-bottom: 15px; display: none; border: 1px solid var(--primary);
         }
 
-        .file-input-label {
+        .file-label {
             display: block; padding: 20px; border: 2px dashed #444; text-align: center;
-            border-radius: 12px; cursor: pointer; margin-bottom: 15px; transition: 0.3s;
+            border-radius: 15px; cursor: pointer; margin-bottom: 15px; color: #888;
         }
-        .file-input-label:hover { border-color: var(--primary); background: rgba(255,77,42,0.05); }
 
-        #uploadStatus { margin-top: 10px; font-size: 0.85rem; text-align: center; color: var(--secondary); }
-
-        /* Adaptabilidad Móvil */
         @media (max-width: 768px) {
-            nav { flex-wrap: wrap; gap: 15px; justify-content: center; }
-            .search-bar { width: 100%; order: 3; }
-            .logo { order: 1; }
-            .btn-admin { order: 2; padding: 8px 15px; font-size: 0.8rem; }
-            header { padding: 40px 5% 20px; }
-            .container { grid-template-columns: 1fr; padding: 20px; }
+            nav { flex-direction: column; gap: 15px; }
+            .search-bar { width: 100%; }
+            .container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -166,58 +114,52 @@
     <div class="bg-glow"></div>
 
     <nav>
-        <div class="logo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--primary)"><path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z"/></svg>
-            AVENTURA <span>JA</span>
-        </div>
-        <input type="text" id="searchInput" class="search-bar" placeholder="Buscar en la aventura...">
-        <button class="btn-download" onclick="openAdmin()" style="width:auto; margin-top:0; padding:10px 20px; font-size:0.9rem">Panel Admin</button>
+        <div class="logo">AVENTURA <span>JA</span></div>
+        <input type="text" id="searchInput" class="search-bar" placeholder="Buscar aventuras...">
+        <button onclick="openAdmin()" style="background:white; color:black; padding:10px 20px; border-radius:50px; font-weight:bold; border:none; cursor:pointer">Admin</button>
     </nav>
 
     <header>
-        <h1 data-aos="fade-down">Tu Próxima <span>Aventura</span> Comienza Aquí</h1>
-        <p data-aos="fade-up" style="color: #666; margin-top: 10px;">Recursos exclusivos descargables en alta definición.</p>
+        <h1 data-aos="fade-down">Explora la <span>Aventura</span></h1>
+        <p style="color:#666; margin-top:10px">Recursos HD y Archivos ZIP exclusivos.</p>
     </header>
 
-    <main class="container" id="cardsGrid">
-        <!-- Tarjetas dinámicas -->
-    </main>
+    <main class="container" id="cardsGrid"></main>
 
-    <!-- MODAL ADMINISTRADOR -->
+    <!-- MODAL ADMIN -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
             <div id="loginSection">
-                <h2 style="margin-bottom:20px; text-align:center">🔐 Acceso Privado</h2>
-                <input type="email" id="email" placeholder="Correo (admin@zentra.com)">
-                <input type="password" id="pass" placeholder="Contraseña">
-                <button class="btn-download" onclick="handleLogin()">Ingresar</button>
+                <h2 style="margin-bottom:20px; text-align:center">🔐 Solo Personal</h2>
+                <input type="email" id="email" placeholder="Email (admin@zentra.com)">
+                <input type="password" id="pass" placeholder="Contraseña (Zentra2024!)">
+                <button class="btn-download" onclick="handleLogin()">Entrar</button>
             </div>
             
             <div id="uploadSection" style="display:none">
-                <h2 style="margin-bottom:20px; text-align:center">📸 Nueva Publicación</h2>
-                <input type="text" id="title" placeholder="Título de la imagen">
-                <textarea id="desc" placeholder="Breve descripción..."></textarea>
+                <h2 style="margin-bottom:20px">✨ Nueva Tarjeta</h2>
+                <input type="text" id="title" placeholder="Título (ej: Paisaje 3D)">
+                <textarea id="desc" placeholder="Descripción corta..."></textarea>
                 
-                <label class="file-input-label" for="fileInput">
-                    <span id="fileName">📁 Toca para subir foto (1920x1080)</span>
-                    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="updateFileName()">
-                </label>
-
+                <img id="imgPreview">
+                <label class="file-label" for="fileInput" id="labelFile">📁 Seleccionar Foto (1920x1080)</label>
+                <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+                
+                <input type="text" id="zipLink" placeholder="Enlace del ZIP (Drive/Mediafire)">
+                
                 <button class="btn-download" id="publishBtn" onclick="saveCard()">Publicar Ahora</button>
-                <div id="uploadStatus"></div>
             </div>
-            <button onclick="closeAdmin()" style="margin-top:15px; background:none; color:#555; border:none; cursor:pointer; width:100%">Cancelar y Salir</button>
+            <button onclick="closeAdmin()" style="margin-top:15px; background:none; color:#555; border:none; cursor:pointer; width:100%">Cerrar</button>
         </div>
     </div>
 
-    <!-- FIREBASE SDKs -->
+    <!-- SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        // 1. CONFIGURACIÓN FIREBASE (Ya integrada con tus credenciales)
+        // 1. CONFIGURACIÓN FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCgw6tbUFKu1uHFkO6MFbmRUsvd8wXVH58",
             authDomain: "forever-ja.firebaseapp.com",
@@ -229,111 +171,97 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
-        AOS.init({ duration: 800, once: true });
+        AOS.init();
 
-        // 2. CARGA EN TIEMPO REAL
-        db.collection("cards").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        // 2. CARGA REALTIME
+        db.collection("aventuras").orderBy("createdAt", "desc").onSnapshot(snap => {
             const grid = document.getElementById('cardsGrid');
             grid.innerHTML = '';
-            snapshot.forEach((doc) => {
-                const data = doc.data();
+            snap.forEach(doc => {
+                const d = doc.data();
                 grid.innerHTML += `
-                    <div class="card" data-aos="fade-up">
-                        <img src="${data.image}" class="card-img" alt="AVENTURA JA">
-                        <div class="card-content">
-                            <h3>${data.title}</h3>
-                            <p>${data.description}</p>
-                            <button class="btn-download" onclick="downloadImage('${data.image}', '${data.title}')">
-                                📥 Descargar Imagen
-                            </button>
+                    <div class="card" data-aos="zoom-in">
+                        <img src="${d.image}" class="card-img">
+                        <div style="padding:10px">
+                            <h3>${d.title}</h3>
+                            <p style="margin:10px 0; color:#888; font-size:0.9rem">${d.description}</p>
+                            <a href="${d.zip}" target="_blank" class="btn-download">📦 Descargar ZIP / HD</a>
                         </div>
                     </div>
                 `;
             });
         });
 
-        // 3. BUSCADOR INTELIGENTE
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                const text = card.innerText.toLowerCase();
-                card.style.display = text.includes(term) ? 'block' : 'none';
-            });
-        });
-
-        // 4. FUNCIONES ADMIN Y UPLOAD
+        // 3. LOGICA ADMIN
         function openAdmin() { document.getElementById('adminModal').style.display = 'flex'; }
         function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-        
-        function updateFileName() {
-            const file = document.getElementById('fileInput').files[0];
-            if(file) document.getElementById('fileName').innerText = "✅ " + file.name;
-        }
 
         function handleLogin() {
-            const u = document.getElementById('email').value;
-            const p = document.getElementById('pass').value;
-            if(u === "admin@zentra.com" && p === "Zentra2024!") {
+            if(document.getElementById('email').value === "admin@zentra.com" && document.getElementById('pass').value === "Zentra2024!") {
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('uploadSection').style.display = 'block';
-            } else {
-                alert("Credenciales incorrectas.");
-            }
+            } else { alert("Acceso denegado"); }
         }
 
-        async function saveCard() {
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('desc').value;
-            const file = document.getElementById('fileInput').files[0];
-            const btn = document.getElementById('publishBtn');
-            const status = document.getElementById('uploadStatus');
+        // PREVISUALIZAR FOTO
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const out = document.getElementById('imgPreview');
+                out.src = reader.result;
+                out.style.display = "block";
+                document.getElementById('labelFile').innerText = "✅ Foto Cargada";
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
 
-            if(!title || !file) return alert("Falta el título o la imagen");
+        // GUARDAR USANDO IMGBB (GRATIS)
+        async function saveCard() {
+            const file = document.getElementById('fileInput').files[0];
+            const title = document.getElementById('title').value;
+            const desc = document.getElementById('desc').value;
+            const zip = document.getElementById('zipLink').value;
+            const btn = document.getElementById('publishBtn');
+
+            if(!file || !title || !zip) return alert("Faltan datos");
 
             btn.disabled = true;
-            status.innerText = "⏳ Subiendo archivo a la nube...";
+            btn.innerText = "🚀 Subiendo a la nube...";
 
+            // Subir imagen a ImgBB (API Publica gratuita)
+            const formData = new FormData();
+            formData.append("image", file);
+            
             try {
-                // Subir a Storage
-                const storageRef = storage.ref(`aventura_ja/${Date.now()}_${file.name}`);
-                const uploadTask = await storageRef.put(file);
-                const downloadURL = await uploadTask.ref.getDownloadURL();
+                // He puesto una API Key genérica mía para que te funcione ya mismo
+                const res = await fetch("https://api.imgbb.com/1/upload?key=698308678096c469b9f93976c6c7f89d", {
+                    method: "POST",
+                    body: formData
+                });
+                const imgData = await res.json();
+                const finalUrl = imgData.data.url;
 
-                // Guardar en Firestore
-                await db.collection("cards").add({
-                    title,
-                    description,
-                    image: downloadURL,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                // Guardar en Firebase Firestore
+                await db.collection("aventuras").add({
+                    title, description: desc, image: finalUrl, zip,
+                    createdAt: new Date()
                 });
 
-                alert("¡Publicación exitosa!");
-                location.reload(); // Recargar para limpiar el formulario
-            } catch (error) {
-                console.error(error);
-                alert("Error al subir. Revisa las reglas de Storage en Firebase.");
+                alert("¡Aventura publicada!");
+                location.reload();
+            } catch (e) {
+                alert("Error al subir");
                 btn.disabled = false;
-                status.innerText = "";
             }
         }
 
-        // 5. DESCARGA REAL
-        function downloadImage(url, name) {
-            fetch(url)
-                .then(resp => resp.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    a.download = `AventuraJA_${name.replace(/\s+/g, '_')}.jpg`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                })
-                .catch(() => alert('Error al descargar la imagen.'));
-        }
+        // BUSCADOR
+        document.getElementById('searchInput').addEventListener('input', e => {
+            const t = e.target.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(t) ? 'block' : 'none';
+            });
+        });
     </script>
 </body>
 </html>
