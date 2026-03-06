@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zentra | Finance App Directory</title>
+    <title>AVENTURA JA | Directorio Premium</title>
     
     <!-- Fuentes y Animaciones -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
             min-height: 100vh;
         }
 
-        /* Fondo Animado de Gradientes (Igual a la imagen) */
+        /* Fondo Animado de Gradientes */
         .bg-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -38,121 +38,126 @@
             z-index: -1;
         }
 
-        /* Navbar */
+        /* Navbar Responsiva */
         nav {
-            padding: 20px 5%;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid var(--glass-border);
         }
 
-        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; display: flex; align-items: center; gap: 10px; }
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; display: flex; align-items: center; gap: 8px; }
         .logo span { color: var(--primary); }
 
         .search-bar {
             background: var(--glass);
             border: 1px solid var(--glass-border);
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 50px;
-            width: 40%;
+            width: 35%;
             color: white;
             outline: none;
-            transition: 0.3s;
+            transition: 0.4s;
         }
 
-        .search-bar:focus { width: 50%; border-color: var(--primary); box-shadow: 0 0 15px rgba(255, 77, 42, 0.3); }
-
         /* Hero */
-        header { padding: 80px 5% 40px; text-align: center; }
-        header h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 15px; }
+        header { padding: 60px 5% 30px; text-align: center; }
+        header h1 { font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; line-height: 1.1; }
         header span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* Grid de Tarjetas */
+        /* Grid de Tarjetas 3D */
         .container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            padding: 40px 5%;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 30px 5%;
             perspective: 1000px;
         }
 
-        /* Tarjeta Estilo 3D & Glassmorphism */
         .card {
             background: var(--glass);
-            border-radius: 28px;
-            padding: 15px;
+            border-radius: 24px;
+            padding: 12px;
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
-            cursor: pointer;
         }
 
         .card:hover {
-            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: translateY(-10px) rotateX(4deg) rotateY(4deg);
+            border-color: rgba(255, 77, 42, 0.4);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         .card-img {
             width: 100%;
-            aspect-ratio: 16/9; /* Tamaño 1920x1080 adaptado */
+            aspect-ratio: 16/9; /* Proporción 1920x1080 */
             object-fit: cover;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            border-radius: 18px;
+            margin-bottom: 15px;
         }
 
-        .card-content h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .card-content p { color: #888; font-size: 0.95rem; line-height: 1.6; min-height: 50px; }
+        .card-content h3 { font-size: 1.3rem; margin-bottom: 8px; color: #fff; }
+        .card-content p { color: #999; font-size: 0.9rem; line-height: 1.5; min-height: 45px; }
 
         .btn-download {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
             background: var(--gradient);
             color: white;
             text-decoration: none;
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 20px;
+            padding: 14px;
+            border-radius: 14px;
+            margin-top: 15px;
             font-weight: 700;
-            transition: 0.3s;
             border: none;
             cursor: pointer;
+            transition: 0.3s;
         }
 
-        .btn-download:hover { transform: scale(1.03); filter: brightness(1.1); }
-
-        /* Panel Admin Modal */
+        /* Modal Admin */
         .modal {
             display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center;
+            padding: 20px;
         }
 
         .modal-content {
-            background: #121214; padding: 40px; border-radius: 30px; width: 90%; max-width: 500px;
-            border: 1px solid var(--primary);
+            background: #111; padding: 30px; border-radius: 25px; width: 100%; max-width: 450px;
+            border: 1px solid var(--glass-border);
+            max-height: 90vh; overflow-y: auto;
         }
 
-        input, textarea {
-            width: 100%; padding: 15px; margin-bottom: 15px; background: #1a1a1c;
-            border: 1px solid #333; color: white; border-radius: 12px; outline: none;
+        input, textarea, select {
+            width: 100%; padding: 14px; margin-bottom: 12px; background: #1a1a1c;
+            border: 1px solid #333; color: white; border-radius: 12px; font-size: 1rem;
         }
 
-        .btn-admin { background: white; color: black; padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; border:none;}
+        .file-input-label {
+            display: block; padding: 20px; border: 2px dashed #444; text-align: center;
+            border-radius: 12px; cursor: pointer; margin-bottom: 15px; transition: 0.3s;
+        }
+        .file-input-label:hover { border-color: var(--primary); background: rgba(255,77,42,0.05); }
 
-        /* Móvil */
+        #uploadStatus { margin-top: 10px; font-size: 0.85rem; text-align: center; color: var(--secondary); }
+
+        /* Adaptabilidad Móvil */
         @media (max-width: 768px) {
-            .search-bar { width: 100%; margin-top: 15px; }
-            nav { flex-direction: column; }
-            .container { grid-template-columns: 1fr; }
+            nav { flex-wrap: wrap; gap: 15px; justify-content: center; }
+            .search-bar { width: 100%; order: 3; }
+            .logo { order: 1; }
+            .btn-admin { order: 2; padding: 8px 15px; font-size: 0.8rem; }
+            header { padding: 40px 5% 20px; }
+            .container { grid-template-columns: 1fr; padding: 20px; }
         }
     </style>
 </head>
@@ -162,62 +167,70 @@
 
     <nav>
         <div class="logo">
-            <svg width="30" height="30" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 0C9.84974 0 0 9.84974 0 22C0 34.1503 9.84974 44 22 44C34.1503 44 44 34.1503 44 22C44 9.84974 34.1503 0 22 0ZM32 24H12V20H32V24Z" fill="white"/></svg>
-            Zentra <span>App</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--primary)"><path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z"/></svg>
+            AVENTURA <span>JA</span>
         </div>
-        <input type="text" id="searchInput" class="search-bar" placeholder="Buscar planes financieros...">
-        <button class="btn-admin" onclick="openAdmin()">Acceso Admin</button>
+        <input type="text" id="searchInput" class="search-bar" placeholder="Buscar en la aventura...">
+        <button class="btn-download" onclick="openAdmin()" style="width:auto; margin-top:0; padding:10px 20px; font-size:0.9rem">Panel Admin</button>
     </nav>
 
     <header>
-        <h1 data-aos="fade-down">Construye tu Futuro con <span>Confianza</span></h1>
-        <p data-aos="fade-up" style="color: #888;">Explora recursos exclusivos de alta calidad.</p>
+        <h1 data-aos="fade-down">Tu Próxima <span>Aventura</span> Comienza Aquí</h1>
+        <p data-aos="fade-up" style="color: #666; margin-top: 10px;">Recursos exclusivos descargables en alta definición.</p>
     </header>
 
     <main class="container" id="cardsGrid">
-        <!-- Las tarjetas se generan aquí -->
+        <!-- Tarjetas dinámicas -->
     </main>
 
     <!-- MODAL ADMINISTRADOR -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
             <div id="loginSection">
-                <h2 style="margin-bottom:20px">🔐 Panel Seguro</h2>
-                <input type="email" id="email" placeholder="Email (admin@zentra.com)">
+                <h2 style="margin-bottom:20px; text-align:center">🔐 Acceso Privado</h2>
+                <input type="email" id="email" placeholder="Correo (admin@zentra.com)">
                 <input type="password" id="pass" placeholder="Contraseña">
-                <button class="btn-download" onclick="handleLogin()">Entrar</button>
+                <button class="btn-download" onclick="handleLogin()">Ingresar</button>
             </div>
             
             <div id="uploadSection" style="display:none">
-                <h2 style="margin-bottom:20px">✨ Crear Nueva Tarjeta</h2>
-                <input type="text" id="title" placeholder="Nombre de la tarjeta">
-                <textarea id="desc" placeholder="Descripción corta..."></textarea>
-                <input type="text" id="imgUrl" placeholder="URL Imagen (1920x1080)">
-                <button class="btn-download" onclick="saveCard()">Publicar en tiempo real</button>
+                <h2 style="margin-bottom:20px; text-align:center">📸 Nueva Publicación</h2>
+                <input type="text" id="title" placeholder="Título de la imagen">
+                <textarea id="desc" placeholder="Breve descripción..."></textarea>
+                
+                <label class="file-input-label" for="fileInput">
+                    <span id="fileName">📁 Toca para subir foto (1920x1080)</span>
+                    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="updateFileName()">
+                </label>
+
+                <button class="btn-download" id="publishBtn" onclick="saveCard()">Publicar Ahora</button>
+                <div id="uploadStatus"></div>
             </div>
-            <button onclick="closeAdmin()" style="margin-top:10px; background:none; color:#555; border:none; cursor:pointer">Cerrar</button>
+            <button onclick="closeAdmin()" style="margin-top:15px; background:none; color:#555; border:none; cursor:pointer; width:100%">Cancelar y Salir</button>
         </div>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- FIREBASE SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        // 1. CONFIGURACIÓN FIREBASE (REEMPLAZA ESTO)
+        // 1. CONFIGURACIÓN FIREBASE (Ya integrada con tus credenciales)
         const firebaseConfig = {
             apiKey: "AIzaSyCgw6tbUFKu1uHFkO6MFbmRUsvd8wXVH58",
             authDomain: "forever-ja.firebaseapp.com",
             projectId: "forever-ja",
-            storageBucket: "forever-ja.firebasestorage.app",
+            storageBucket: "forever-ja.appspot.com",
             messagingSenderId: "774693890413",
             appId: "1:774693890413:web:d4118e797cb42f3de55264"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        AOS.init({ duration: 1000, once: true });
+        const storage = firebase.storage();
+        AOS.init({ duration: 800, once: true });
 
         // 2. CARGA EN TIEMPO REAL
         db.collection("cards").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
@@ -226,13 +239,13 @@
             snapshot.forEach((doc) => {
                 const data = doc.data();
                 grid.innerHTML += `
-                    <div class="card" data-aos="zoom-in-up">
-                        <img src="${data.image}" class="card-img" alt="1920x1080 resource">
+                    <div class="card" data-aos="fade-up">
+                        <img src="${data.image}" class="card-img" alt="AVENTURA JA">
                         <div class="card-content">
                             <h3>${data.title}</h3>
                             <p>${data.description}</p>
-                            <button class="btn-download" onclick="downloadImage('${data.image}')">
-                                ⬇️ Descargar (1080p)
+                            <button class="btn-download" onclick="downloadImage('${data.image}', '${data.title}')">
+                                📥 Descargar Imagen
                             </button>
                         </div>
                     </div>
@@ -240,7 +253,7 @@
             });
         });
 
-        // 3. LÓGICA DE BÚSQUEDA
+        // 3. BUSCADOR INTELIGENTE
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             document.querySelectorAll('.card').forEach(card => {
@@ -249,9 +262,14 @@
             });
         });
 
-        // 4. SISTEMA ADMINISTRADOR
+        // 4. FUNCIONES ADMIN Y UPLOAD
         function openAdmin() { document.getElementById('adminModal').style.display = 'flex'; }
         function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+        
+        function updateFileName() {
+            const file = document.getElementById('fileInput').files[0];
+            if(file) document.getElementById('fileName').innerText = "✅ " + file.name;
+        }
 
         function handleLogin() {
             const u = document.getElementById('email').value;
@@ -260,34 +278,61 @@
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('uploadSection').style.display = 'block';
             } else {
-                alert("Acceso incorrecto");
+                alert("Credenciales incorrectas.");
             }
         }
 
         async function saveCard() {
             const title = document.getElementById('title').value;
             const description = document.getElementById('desc').value;
-            const image = document.getElementById('imgUrl').value;
+            const file = document.getElementById('fileInput').files[0];
+            const btn = document.getElementById('publishBtn');
+            const status = document.getElementById('uploadStatus');
 
-            if(!title || !image) return alert("Por favor completa los campos");
+            if(!title || !file) return alert("Falta el título o la imagen");
 
-            await db.collection("cards").add({
-                title, description, image,
-                createdAt: new Date()
-            });
+            btn.disabled = true;
+            status.innerText = "⏳ Subiendo archivo a la nube...";
 
-            alert("¡Publicado con éxito!");
-            closeAdmin();
+            try {
+                // Subir a Storage
+                const storageRef = storage.ref(`aventura_ja/${Date.now()}_${file.name}`);
+                const uploadTask = await storageRef.put(file);
+                const downloadURL = await uploadTask.ref.getDownloadURL();
+
+                // Guardar en Firestore
+                await db.collection("cards").add({
+                    title,
+                    description,
+                    image: downloadURL,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert("¡Publicación exitosa!");
+                location.reload(); // Recargar para limpiar el formulario
+            } catch (error) {
+                console.error(error);
+                alert("Error al subir. Revisa las reglas de Storage en Firebase.");
+                btn.disabled = false;
+                status.innerText = "";
+            }
         }
 
-        // 5. FUNCIÓN DESCARGAR
-        function downloadImage(url) {
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'Zentra_Finanzas_Premium.jpg';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        // 5. DESCARGA REAL
+        function downloadImage(url, name) {
+            fetch(url)
+                .then(resp => resp.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `AventuraJA_${name.replace(/\s+/g, '_')}.jpg`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(() => alert('Error al descargar la imagen.'));
         }
     </script>
 </body>
